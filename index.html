@@ -39,7 +39,7 @@ p{
 }
 
 button{
-  margin-top:18px;
+  margin-top:14px;
   padding:12px 26px;
   border:none;
   border-radius:999px;
@@ -47,6 +47,7 @@ button{
   color:#0f172a;
   font-size:14px;
   cursor:pointer;
+  width:100%;
 }
 
 @keyframes fadeIn{
@@ -54,11 +55,20 @@ button{
   to{opacity:1;transform:none}
 }
 
-/* خاتم SVG */
+/* خاتم ايموشن */
 .ring{
-  margin:18px auto;
-  width:80px;
-  height:80px;
+  font-size:64px;
+  margin:20px 0;
+  opacity:0;
+  transform:scale(.85);
+  animation:ringIn 1.6s ease forwards;
+}
+
+@keyframes ringIn{
+  to{
+    opacity:1;
+    transform:scale(1);
+  }
 }
 
 .summary{
@@ -77,7 +87,6 @@ button{
 
 <div class="card">
   <div id="content"></div>
-  <button id="btn" onclick="next()">كملي</button>
 </div>
 
 <script>
@@ -116,9 +125,7 @@ const steps = [
 
 let i=0;
 const answers=[];
-
 const content=document.getElementById("content");
-const btn=document.getElementById("btn");
 
 function render(){
   const step=steps[i];
@@ -127,7 +134,6 @@ function render(){
     html+=`<button onclick="choose('${opt}')">${opt}</button>`;
   });
   content.innerHTML=html;
-  btn.classList.add("hidden");
 }
 
 function choose(ans){
@@ -142,45 +148,51 @@ function choose(ans){
 
 function end(last){
   let html="";
+
   if(last==="ممكن ادي فرصة"){
     html=`
-    <p>الاختيارات اللي بتيجي على مهل
-غالبا بتوصل صح</p>
+    <p>
+الاختيارات اللي بتيجي على مهل
+غالبا بتوصل صح
+    </p>
 
-    <div class="ring">
-      <svg viewBox="0 0 100 100" fill="none" stroke="#e5e7eb" stroke-width="3">
-        <circle cx="50" cy="55" r="25"/>
-        <path d="M40 30 L50 20 L60 30"/>
-      </svg>
-    </div>
+    <div class="ring">💍</div>
 
-    <p>ده اختيار شجاع
-ومحترم</p>
+    <p>
+ده اختيار شجاع
+ومحترم
+    </p>
     `;
   }else if(last==="محتاجة وقت اكتر"){
-    html=`<p>الوقت مش عدو
+    html=`
+    <p>
+الوقت مش عدو
 والحاجات اللي بتاخد وقت
-بتستاهل</p>`;
+بتستاهل
+    </p>`;
   }else if(last==="نخلي الامور زي ما هي"){
-    html=`<p>الراحة اختيار
-واحترامها اهم من اي حاجة</p>`;
+    html=`
+    <p>
+الراحة اختيار
+واحترامها
+اهم من اي حاجة
+    </p>`;
   }else{
-    html=`<p>الوضوح حتى في الرفض
-حاجة تستحق التقدير</p>`;
+    html=`
+    <p>
+الوضوح حتى في الرفض
+حاجة تستحق التقدير
+    </p>`;
   }
 
   html+=`<p id="title">رسالة</p>`;
   content.innerHTML=html;
-  btn.classList.add("hidden");
 
-  // زر ملخص مخفي بالضغط المطول
-  let pressTimer;
-  document.getElementById("title").addEventListener("mousedown",()=>{
-    pressTimer=setTimeout(showSummary,1500);
-  });
-  document.getElementById("title").addEventListener("mouseup",()=>{
-    clearTimeout(pressTimer);
-  });
+  // زر ملخص مخفي (ضغط مطول)
+  let timer;
+  const title=document.getElementById("title");
+  title.addEventListener("mousedown",()=>timer=setTimeout(showSummary,1500));
+  title.addEventListener("mouseup",()=>clearTimeout(timer));
 }
 
 function showSummary(){
