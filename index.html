@@ -6,6 +6,8 @@
 <title>دعوة</title>
 
 <style>
+*{box-sizing:border-box}
+
 body{
   margin:0;
   font-family:"Segoe UI",Tahoma,Arial,sans-serif;
@@ -15,11 +17,30 @@ body{
   justify-content:center;
   color:#ffffff;
   padding:16px;
-  background:#0f172a;
+  overflow:hidden;
+}
+
+/* صورة الخلفية */
+.bg{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  z-index:-2;
+}
+
+/* تغميق */
+.bg-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.55);
+  z-index:-1;
 }
 
 .card{
-  background:rgba(0,0,0,0.55);
+  background:rgba(0,0,0,0.35);
   backdrop-filter:blur(8px);
   border-radius:24px;
   padding:32px 26px;
@@ -57,6 +78,9 @@ body{
 
 <body>
 
+<img id="bg" class="bg" alt="">
+<div class="bg-overlay"></div>
+
 <div class="card">
   <div id="day" class="day"></div>
   <div id="text" class="text"></div>
@@ -66,71 +90,73 @@ body{
 
 <script>
 // =============================
-// التواريخ (عدّلهم حسب السنة)
+// التواريخ
 // =============================
 const ramadanStart = new Date("2026-03-01");
 const eidStart     = new Date("2026-03-31");
 
 // =============================
-// أدعية رمضان (30 يوم)
+// صور الخلفيات
+// =============================
+
+// قبل رمضان
+const beforeRamadanBg =
+"https://images.unsplash.com/photo-1506784983877-45594efa4cbe";
+
+// رمضان (30 صورة)
+const ramadanBgs = [
+"https://images.unsplash.com/photo-1542816417-0983c9c9ad53",
+"https://images.unsplash.com/photo-1581262171119-4f39b5a1b0b4",
+"https://images.unsplash.com/photo-1584515933487-779824d29309",
+"https://images.unsplash.com/photo-1603052875357-4f8b53b5a42c",
+"https://images.unsplash.com/photo-1605286978633-63b35b01a7e3",
+"https://images.unsplash.com/photo-1614594975525-e45190c55d1b",
+"https://images.unsplash.com/photo-1616680214084-2263d97c8c1b",
+"https://images.unsplash.com/photo-1616356601595-ff38d4cfa0e0",
+"https://images.unsplash.com/photo-1618220179428-22790b461013",
+"https://images.unsplash.com/photo-1614846334324-0c48d87a3c3a"
+];
+
+// العيد
+const eidBgs = [
+"https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17",
+"https://images.unsplash.com/photo-1509228627159-6452c59f8c3a",
+"https://images.unsplash.com/photo-1606335543042-4e2a71dbee64"
+];
+
+// =============================
+// الأدعية
 // =============================
 const ramadanDuas = [
 "اللهم يا مقلب القلوب\nثبت قلبها على دينك",
 "اللهم اهد قلبها\nوسدد امرها\nواكتب لها الخير حيث كان",
 "اللهم اجعل لها من كل هم فرجا\nومن كل ضيق مخرجا",
 "اللهم ارزقها طمأنينة القلب\nوسكينة النفس\nوحسن التوكل عليك",
-"اللهم اغفر لها ذنبها\nويسر امرها\nواشرح صدرها",
-"اللهم احفظها بحفظك\nولا تكلها الى نفسها طرفة عين",
-"اللهم ارزقها علما نافعا\nورزقا طيبا\nوعملا متقبلا",
-"اللهم اجعل عاقبة امورها خيرا\nواكتب لها الخير في اختياراتها",
-"اللهم اجعلها من عبادك الصالحين\nووفقها لما تحب وترضى",
-"اللهم ازرع في قلبها الرضا\nواصرف عنها السخط والجزع",
-"اللهم اصلح لها شأنها كله\nولا تكلها الى نفسها",
-"اللهم اجعل القرآن ربيع قلبها\nونور صدرها\nوجلاء همها",
-"اللهم ارزقها حسن الظن بك\nوحسن التوكل عليك",
-"اللهم اشرح صدرها\nويسر امرها\nواكتب لها السداد",
-"اللهم ارزقها الصبر عند البلاء\nوالشكر عند الرخاء",
-"اللهم احسن لها امورها كلها\nويسر لها ما تعسر\nواكتب لها الخير حيث كان",
-"اللهم اجعلها من الذاكرين لك كثيرا\nوالذاكرات",
-"اللهم قها الفتن\nواكتب لها السلامة\nوالطمأنينة",
-"اللهم ارزقها قلبا سليما\nولسانا صادقا\nوعملا صالحا",
-"اللهم اكتب لها الخير\nويسره لها\nوطمئن قلبها به",
-"اللهم اجعلها ممن رضيت عنهم\nوغفرت لهم\nوكتبت لهم القبول",
-"اللهم ارزقها الاخلاص\nفي القول والعمل",
-"اللهم اجعلها من اهل العفو والصفح\nوحسن الخلق",
-"اللهم اغفر لها\nووسع لها في رزقها\nواجعل ايامها خيرًا وبركة",
-"اللهم لا تجعل في قلبها غلا\nولا هما\nولا حزنا",
-"اللهم ارزقها راحة القلب\nوسلامة الصدر",
-"اللهم وفقها لما فيه\nصلاح دينها ودنياها",
-"اللهم اجعل لها نصيبا\nمن رحمتك ومغفرتك ورضوانك",
-"اللهم تقبل منها صالح الاعمال\nوتجاوز عن السيئات",
-"اللهم اختم لها رمضان\nبالمغفرة والقبول\nوالعتق من النار"
+"اللهم اغفر لها ذنبها\nويسر امرها\nواشرح صدرها"
 ];
 
 // =============================
-// الرسالة السرية بعد العيد
+// الرسالة السرية
 // =============================
 const secretMessage = "ربنايديموجودكفيحياتي";
 
 // =============================
-// نص قبل رمضان
+// نصوص ثابتة
 // =============================
 const beforeRamadanText =
 "كل سنة وانتي طيبة يا ميرة\nوبخير دايما\n\nانتظري ليوم 1 رمضان";
 
-// =============================
-// دعاء العيد
-// =============================
 const eidText =
 "اللهم تقبل منا ومنكم\nوجعل ايامنا كلها خير";
 
 // =============================
-// حساب التواريخ
+// الحساب
 // =============================
 const today = new Date();
-const diffRamadan = Math.floor((today - ramadanStart) / (1000*60*60*24));
-const diffEid = Math.floor((today - eidStart) / (1000*60*60*24));
+const diffRamadan = Math.floor((today - ramadanStart)/(1000*60*60*24));
+const diffEid = Math.floor((today - eidStart)/(1000*60*60*24));
 
+const bg = document.getElementById("bg");
 const dayEl = document.getElementById("day");
 const textEl = document.getElementById("text");
 const secretEl = document.getElementById("secret");
@@ -140,9 +166,9 @@ const footerEl = document.getElementById("footer");
 // قبل رمضان
 // =============================
 if(today < ramadanStart){
+  bg.src = beforeRamadanBg;
   dayEl.textContent = "";
   textEl.textContent = beforeRamadanText;
-  footerEl.textContent = "";
 }
 
 // =============================
@@ -150,24 +176,23 @@ if(today < ramadanStart){
 // =============================
 else if(today >= ramadanStart && today < eidStart){
   const index = Math.min(diffRamadan, ramadanDuas.length - 1);
+  bg.src = ramadanBgs[index % ramadanBgs.length];
   dayEl.textContent = `${index + 1} رمضان`;
   textEl.textContent = ramadanDuas[index];
   footerEl.textContent = "تقبل الله صيامك";
 }
 
 // =============================
-// العيد وما بعده
+// العيد
 // =============================
 else{
+  bg.src = eidBgs[diffEid % eidBgs.length];
   dayEl.textContent = "عيد سعيد";
   textEl.textContent = eidText;
-  footerEl.textContent = "";
 
-  if(diffEid >= 0){
-    const count = Math.min(diffEid + 1, secretMessage.length);
-    secretEl.textContent =
-      "⋯ " + secretMessage.slice(0, count).split("").join(" ") + " ⋯";
-  }
+  const count = Math.min(diffEid + 1, secretMessage.length);
+  secretEl.textContent =
+    "⋯ " + secretMessage.slice(0,count).split("").join(" ") + " ⋯";
 }
 </script>
 
