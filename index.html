@@ -3,11 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>دعوة رمضان</title>
+<title>دعوة</title>
 
 <style>
-*{box-sizing:border-box}
-
 body{
   margin:0;
   font-family:"Segoe UI",Tahoma,Arial,sans-serif;
@@ -17,31 +15,11 @@ body{
   justify-content:center;
   color:#ffffff;
   padding:16px;
-  overflow:hidden;
+  background:#0f172a;
 }
 
-/* الصورة الخلفية الحقيقية */
-.bg{
-  position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:center center;
-  z-index:-2;
-}
-
-/* طبقة تغميق */
-.bg-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.55);
-  z-index:-1;
-}
-
-/* الكارت */
 .card{
-  background:rgba(0,0,0,0.35);
+  background:rgba(0,0,0,0.55);
   backdrop-filter:blur(8px);
   border-radius:24px;
   padding:32px 26px;
@@ -50,21 +28,27 @@ body{
   text-align:center;
 }
 
-/* النص */
 .day{
   font-size:20px;
   margin-bottom:16px;
   font-weight:600;
 }
 
-.duaa{
+.text{
   font-size:16px;
   line-height:2;
   white-space:pre-line;
 }
 
+.secret{
+  margin-top:18px;
+  font-size:14px;
+  letter-spacing:4px;
+  opacity:.6;
+}
+
 .footer{
-  margin-top:20px;
+  margin-top:16px;
   font-size:14px;
   opacity:.9;
 }
@@ -73,25 +57,24 @@ body{
 
 <body>
 
-<img id="bg" class="bg" alt="">
-<div class="bg-overlay"></div>
-
 <div class="card">
   <div id="day" class="day"></div>
-  <div id="duaa" class="duaa"></div>
-  <div class="footer">تقبل الله صيامك</div>
+  <div id="text" class="text"></div>
+  <div id="secret" class="secret"></div>
+  <div id="footer" class="footer"></div>
 </div>
 
 <script>
 // =============================
-// عدل تاريخ اول يوم رمضان هنا
+// التواريخ (عدّلهم حسب السنة)
 // =============================
-const ramadanStart = new Date("2026-02-06");
+const ramadanStart = new Date("2026-03-01");
+const eidStart     = new Date("2026-03-31");
 
 // =============================
-// الادعية
+// أدعية رمضان (30 يوم)
 // =============================
-const duas = [
+const ramadanDuas = [
 "اللهم يا مقلب القلوب\nثبت قلبها على دينك",
 "اللهم اهد قلبها\nوسدد امرها\nواكتب لها الخير حيث كان",
 "اللهم اجعل لها من كل هم فرجا\nومن كل ضيق مخرجا",
@@ -125,60 +108,67 @@ const duas = [
 ];
 
 // =============================
-// صور الخلفية
+// الرسالة السرية بعد العيد
 // =============================
-const backgrounds = [
-"https://images.unsplash.com/photo-1542816417-0983c9c9ad53",
-"https://images.unsplash.com/photo-1581262171119-4f39b5a1b0b4",
-"https://images.unsplash.com/photo-1584515933487-779824d29309",
-"https://images.unsplash.com/photo-1603052875357-4f8b53b5a42c",
-"https://images.unsplash.com/photo-1605286978633-63b35b01a7e3",
-"https://images.unsplash.com/photo-1614594975525-e45190c55d1b",
-"https://images.unsplash.com/photo-1616680214084-2263d97c8c1b",
-"https://images.unsplash.com/photo-1616356601595-ff38d4cfa0e0",
-"https://images.unsplash.com/photo-1618220179428-22790b461013",
-"https://images.unsplash.com/photo-1614846334324-0c48d87a3c3a",
-"https://images.unsplash.com/photo-1542377284383-4aab66c57d44",
-"https://images.unsplash.com/photo-1600377984037-0a9c55e50a0b",
-"https://images.unsplash.com/photo-1599946347371-68eb71b16afc",
-"https://images.unsplash.com/photo-1598023696416-0193a0bcd302",
-"https://images.unsplash.com/photo-1600096194534-95cf5ece04cf",
-"https://images.unsplash.com/photo-1610210324008-4c6b6d15a0f3",
-"https://images.unsplash.com/photo-1612159308029-3a5c4fcbbe89",
-"https://images.unsplash.com/photo-1589652717521-10c0d092dea9",
-"https://images.unsplash.com/photo-1611095564985-efc3d1f1c2b2",
-"https://images.unsplash.com/photo-1611312449408-fcece27cdbb7",
-"https://images.unsplash.com/photo-1596815064285-45ed8a9c0463",
-"https://images.unsplash.com/photo-1584467735815-f778f274c66f",
-"https://images.unsplash.com/photo-1615474634824-f45fbfef0c16",
-"https://images.unsplash.com/photo-1588514899099-e2df6951dde1",
-"https://images.unsplash.com/photo-1602490962990-9f45f95e1c64",
-"https://images.unsplash.com/photo-1616531770192-6b4c9a57e89f",
-"https://images.unsplash.com/photo-1585747860715-2ba37e788b70",
-"https://images.unsplash.com/photo-1580906855285-76fbbf2fda63",
-"https://images.unsplash.com/photo-1615840287214-7ff58936f6a9",
-"https://images.unsplash.com/photo-1580674285054-bed31e145f59"
-];
+const secretMessage = "ربنايديموجودكفيحياتي";
 
 // =============================
-// الحساب
+// نص قبل رمضان
 // =============================
-function getRamadanIndex(){
-  const today = new Date();
-  const diff = Math.floor((today - ramadanStart) / (1000*60*60*24));
-  if(diff < 0) return 0;
-  if(diff >= 30) return 29;
-  return diff;
+const beforeRamadanText =
+"كل سنة وانتي طيبة يا ميرة\nوبخير دايما\n\nانتظري ليوم 1 رمضان";
+
+// =============================
+// دعاء العيد
+// =============================
+const eidText =
+"اللهم تقبل منا ومنكم\nوجعل ايامنا كلها خير";
+
+// =============================
+// حساب التواريخ
+// =============================
+const today = new Date();
+const diffRamadan = Math.floor((today - ramadanStart) / (1000*60*60*24));
+const diffEid = Math.floor((today - eidStart) / (1000*60*60*24));
+
+const dayEl = document.getElementById("day");
+const textEl = document.getElementById("text");
+const secretEl = document.getElementById("secret");
+const footerEl = document.getElementById("footer");
+
+// =============================
+// قبل رمضان
+// =============================
+if(today < ramadanStart){
+  dayEl.textContent = "";
+  textEl.textContent = beforeRamadanText;
+  footerEl.textContent = "";
 }
 
-const index = getRamadanIndex();
+// =============================
+// رمضان
+// =============================
+else if(today >= ramadanStart && today < eidStart){
+  const index = Math.min(diffRamadan, ramadanDuas.length - 1);
+  dayEl.textContent = `${index + 1} رمضان`;
+  textEl.textContent = ramadanDuas[index];
+  footerEl.textContent = "تقبل الله صيامك";
+}
 
 // =============================
-// العرض
+// العيد وما بعده
 // =============================
-document.getElementById("day").textContent = `${index + 1} رمضان`;
-document.getElementById("duaa").textContent = duas[index];
-document.getElementById("bg").src = backgrounds[index];
+else{
+  dayEl.textContent = "عيد سعيد";
+  textEl.textContent = eidText;
+  footerEl.textContent = "";
+
+  if(diffEid >= 0){
+    const count = Math.min(diffEid + 1, secretMessage.length);
+    secretEl.textContent =
+      "⋯ " + secretMessage.slice(0, count).split("").join(" ") + " ⋯";
+  }
+}
 </script>
 
 </body>
