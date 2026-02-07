@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>رمضان</title>
+<title>رسالة رمضان</title>
 
 <style>
 *{box-sizing:border-box}
@@ -20,7 +20,6 @@ body{
   overflow:hidden;
 }
 
-/* صورة الخلفية */
 .bg{
   position:fixed;
   inset:0;
@@ -31,15 +30,13 @@ body{
   z-index:-2;
 }
 
-/* طبقة تغميق */
-.overlay-bg{
+.overlay{
   position:fixed;
   inset:0;
   background:rgba(0,0,0,0.55);
   z-index:-1;
 }
 
-/* الكارت */
 .card{
   background:rgba(0,0,0,0.35);
   backdrop-filter:blur(8px);
@@ -74,10 +71,9 @@ body{
   opacity:.6;
 }
 
-/* زرار الصوت */
 .audio-btn{
   margin-top:18px;
-  padding:10px 20px;
+  padding:10px 22px;
   border:none;
   border-radius:999px;
   background:#fff;
@@ -91,7 +87,7 @@ body{
 <body>
 
 <img id="bg" class="bg" alt="">
-<div class="overlay-bg"></div>
+<div class="overlay"></div>
 
 <div class="card">
   <div id="day" class="day"></div>
@@ -108,59 +104,85 @@ body{
 </audio>
 
 <script>
-// ================= التواريخ =================
+// =================== التواريخ ===================
 const ramadanStart = new Date("2026-03-01");
 const eidStart     = new Date("2026-03-31");
 
-// ================= 30 دعاء =================
+// =================== الصور ===================
+const beforeRamadanImage = "images/before.jpg";
+const eidImage = "images/eid.jpg";
+
+const ramadanImages = [
+  "images/ramadan/01.jpg",
+  "images/ramadan/02.jpg",
+  "images/ramadan/03.jpg",
+  "images/ramadan/04.jpg",
+  "images/ramadan/05.jpg",
+  "images/ramadan/06.jpg",
+  "images/ramadan/07.jpg",
+  "images/ramadan/08.jpg",
+  "images/ramadan/09.jpg",
+  "images/ramadan/10.jpg",
+  "images/ramadan/11.jpg",
+  "images/ramadan/12.jpg",
+  "images/ramadan/13.jpg",
+  "images/ramadan/14.jpg",
+  "images/ramadan/15.jpg",
+  "images/ramadan/16.jpg",
+  "images/ramadan/17.jpg",
+  "images/ramadan/18.jpg",
+  "images/ramadan/19.jpg",
+  "images/ramadan/20.jpg",
+  "images/ramadan/21.jpg",
+  "images/ramadan/22.jpg",
+  "images/ramadan/23.jpg",
+  "images/ramadan/24.jpg",
+  "images/ramadan/25.jpg",
+  "images/ramadan/26.jpg",
+  "images/ramadan/27.jpg",
+  "images/ramadan/28.jpg",
+  "images/ramadan/29.jpg",
+  "images/ramadan/30.jpg"
+];
+
+// =================== الأدعية ===================
 const ramadanDuas = [
 "اللهم يا مقلب القلوب\nثبت قلبها على دينك",
-"اللهم اهد قلبها\nوسدد امرها\nواكتب لها الخير حيث كان",
-"اللهم اجعل لها من كل هم فرجا\nومن كل ضيق مخرجا",
-"اللهم ارزقها طمأنينة القلب\nوسكينة النفس\nوحسن التوكل عليك",
-"اللهم اغفر لها ذنبها\nويسر امرها\nواشرح صدرها",
-"اللهم احفظها بحفظك\nولا تكلها الى نفسها طرفة عين",
-"اللهم ارزقها علما نافعا\nورزقا طيبا\nوعملا متقبلا",
-"اللهم اجعل عاقبة امورها خيرا\nواكتب لها الخير في اختياراتها",
-"اللهم اجعلها من عبادك الصالحين\nووفقها لما تحب وترضى",
-"اللهم ازرع في قلبها الرضا\nواصرف عنها السخط والجزع",
-"اللهم اصلح لها شأنها كله\nولا تكلها الى نفسها",
-"اللهم اجعل القرآن ربيع قلبها\nونور صدرها\nوجلاء همها",
-"اللهم ارزقها حسن الظن بك\nوحسن التوكل عليك",
-"اللهم اشرح صدرها\nويسر امرها\nواكتب لها السداد",
-"اللهم ارزقها الصبر عند البلاء\nوالشكر عند الرخاء",
-"اللهم احسن لها امورها كلها\nويسر لها ما تعسر\nواكتب لها الخير حيث كان",
-"اللهم اجعلها من الذاكرين لك كثيرا\nوالذاكرات",
-"اللهم قها الفتن\nواكتب لها السلامة\nوالطمأنينة",
-"اللهم ارزقها قلبا سليما\nولسانا صادقا\nوعملا صالحا",
-"اللهم اكتب لها الخير\nويسره لها\nوطمئن قلبها به",
-"اللهم اجعلها ممن رضيت عنهم\nوغفرت لهم\nوكتبت لهم القبول",
-"اللهم ارزقها الاخلاص\nفي القول والعمل",
-"اللهم اجعلها من اهل العفو والصفح\nوحسن الخلق",
-"اللهم اغفر لها\nووسع لها في رزقها\nواجعل ايامها خيرًا وبركة",
-"اللهم لا تجعل في قلبها غلا\nولا هما\nولا حزنا",
-"اللهم ارزقها راحة القلب\nوسلامة الصدر",
-"اللهم وفقها لما فيه\nصلاح دينها ودنياها",
-"اللهم اجعل لها نصيبا\nمن رحمتك ومغفرتك ورضوانك",
-"اللهم تقبل منها صالح الاعمال\nوتجاوز عن السيئات",
-"اللهم اختم لها رمضان\nبالمغفرة والقبول\nوالعتق من النار"
+"اللهم اهد قلبها\nوسدد امرها",
+"اللهم اجعل لها من كل هم فرجا",
+"اللهم ارزقها طمأنينة القلب",
+"اللهم اغفر لها وشرح صدرها",
+"اللهم احفظها ولا تكلها لنفسها",
+"اللهم ارزقها علما نافعا",
+"اللهم اكتب لها الخير في اختياراتها",
+"اللهم اجعلها من عبادك الصالحين",
+"اللهم ازرع في قلبها الرضا",
+"اللهم اصلح لها شأنها كله",
+"اللهم اجعل القرآن ربيع قلبها",
+"اللهم ارزقها حسن الظن بك",
+"اللهم يسر امرها واكتب لها السداد",
+"اللهم ارزقها الصبر والسكينة",
+"اللهم احسن لها امورها كلها",
+"اللهم اجعلها من الذاكرين",
+"اللهم اكتب لها السلامة",
+"اللهم ارزقها قلبا سليما",
+"اللهم اطمئن قلبها بالخير",
+"اللهم اجعلها ممن رضيت عنهم",
+"اللهم ارزقها الاخلاص",
+"اللهم اجعلها من اهل العفو",
+"اللهم وسع لها في رزقها",
+"اللهم ابعد عنها الحزن",
+"اللهم ارزقها راحة القلب",
+"اللهم وفقها لصلاح امورها",
+"اللهم اجعل لها نصيبا من رحمتك",
+"اللهم تقبل منها صالح الاعمال",
+"اللهم اختم لها رمضان بالقبول"
 ];
 
-// ================= 30 صورة رمضان (مضمونة) =================
-const ramadanImages = Array.from({length:30},(_,i)=>
-  `https://source.unsplash.com/900x1600/?ramadan,islam,mosque&sig=${i}`
-);
-
-// ================= صور العيد =================
-const eidImages = [
-  "https://source.unsplash.com/900x1600/?eid,celebration",
-  "https://source.unsplash.com/900x1600/?eid,mosque"
-];
-
-// ================= الرسالة السرية =================
+// =================== الرسالة السرية ===================
 const secretMessage = "ربنايديموجودكفيحياتي";
 
-// ================= عناصر =================
+// =================== العناصر ===================
 const bg = document.getElementById("bg");
 const dayEl = document.getElementById("day");
 const textEl = document.getElementById("text");
@@ -169,20 +191,18 @@ const secretEl = document.getElementById("secret");
 const audio = document.getElementById("audio");
 const audioBtn = document.getElementById("audioBtn");
 
-// ================= حساب اليوم =================
+// =================== الحساب ===================
 const today = new Date();
 const diffRamadan = Math.floor((today - ramadanStart)/(1000*60*60*24));
 const diffEid = Math.floor((today - eidStart)/(1000*60*60*24));
 
-// ================= قبل رمضان =================
+// =================== قبل رمضان ===================
 if(today < ramadanStart){
-  bg.src = ramadanImages[0];
-  dayEl.textContent = "";
+  bg.src = beforeRamadanImage;
   textEl.textContent =
     "اميرة\nكل عام وانتى بخير\nوفى سعادة دائمة\n\nانتظرى ليوم 1 رمضان";
 
   audioBtn.style.display = "inline-block";
-
   audioBtn.onclick = ()=>{
     if(audio.paused){
       audio.play();
@@ -194,7 +214,7 @@ if(today < ramadanStart){
   };
 }
 
-// ================= رمضان =================
+// =================== رمضان ===================
 else if(today >= ramadanStart && today < eidStart){
   const i = Math.min(diffRamadan,29);
   bg.src = ramadanImages[i];
@@ -203,9 +223,9 @@ else if(today >= ramadanStart && today < eidStart){
   footerEl.textContent = "تقبل الله صيامك";
 }
 
-// ================= العيد =================
+// =================== العيد ===================
 else{
-  bg.src = eidImages[diffEid % eidImages.length];
+  bg.src = eidImage;
   dayEl.textContent = "عيد سعيد";
   textEl.textContent = "اللهم تقبل منا ومنكم";
   const count = Math.min(diffEid+1, secretMessage.length);
