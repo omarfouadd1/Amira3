@@ -35,24 +35,23 @@ body{
 .overlay{
   position:fixed;
   inset:0;
-background:rgba(15,20,45,.18);
+  background:rgba(15,20,45,.18);
   z-index:-1;
 }
 
 /* الكارت */
 .card{
-  background:rgba(10,15,35,.22); /* شفافية أخف */
-  backdrop-filter:blur(14px);    /* بلور أنعم */
+  background:rgba(10,15,35,.22);
+  backdrop-filter:blur(14px);
   border-radius:30px;
-  padding:44px 36px;             /* مساحة أكبر جوه */
-  max-width:520px;               /* عرض أكبر */
+  padding:44px 36px;
+  max-width:520px;
   width:100%;
   text-align:center;
   box-shadow:
     0 20px 60px rgba(0,0,0,.25),
     inset 0 0 0 1px rgba(255,255,255,.06);
 }
-
 
 /* اليوم */
 .day{
@@ -81,21 +80,12 @@ background:rgba(15,20,45,.18);
   text-shadow:0 0 8px rgba(180,200,255,.35);
 }
 
-/* الفوتر */
+/* الفوتر + العداد */
 .footer{
   margin-top:32px;
   font-size:14px;
   opacity:.95;
   text-shadow:0 0 6px rgba(170,200,255,.3);
-}
-
-/* اللغز */
-.secret{
-  margin-top:18px;
-  font-size:14px;
-  letter-spacing:4px;
-  opacity:.7;
-  text-shadow:0 0 10px rgba(180,210,255,.6);
 }
 </style>
 </head>
@@ -110,6 +100,7 @@ background:rgba(15,20,45,.18);
   <div id="name" class="name"></div>
   <div id="text" class="text"></div>
   <div id="footer" class="footer"></div>
+  <div id="countdown" class="footer"></div>
 </div>
 
 <script>
@@ -120,7 +111,35 @@ const ramadanStart = new Date("2026-02-18");
 const eidStart     = new Date("2026-03-19");
 
 // =====================
-// الأدعية (نهائية)
+// عداد تنازلي ليوم 18
+// =====================
+const targetDay = new Date("2026-03-05T00:00:00"); // عدل التاريخ
+
+const countdownEl = document.getElementById("countdown");
+
+function updateCountdown(){
+  const now = new Date();
+  const diff = targetDay - now;
+
+  if(diff <= 0){
+    countdownEl.textContent = "";
+    return;
+  }
+
+  const days = Math.floor(diff / (1000*60*60*24));
+  const hours = Math.floor((diff / (1000*60*60)) % 24);
+  const minutes = Math.floor((diff / (1000*60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  countdownEl.textContent =
+    `متبقي ${days} يوم ${hours} ساعة ${minutes} دقيقة ${seconds} ثانية`;
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// =====================
+// الأدعية
 // =====================
 const ramadanDuas = [
 "اللهم يا مقلب القلوب ثبت قلبها على دينك",
@@ -156,56 +175,14 @@ const ramadanDuas = [
 ];
 
 // =====================
-// الصور (Placeholder – انت هتحط اللينكات)
+// الصور
 // =====================
-const beforeRamadanImage = "https://plus.unsplash.com/premium_photo-1677956021669-20dd6af2ae29?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+const beforeRamadanImage = "https://plus.unsplash.com/premium_photo-1677956021669-20dd6af2ae29?q=80&w=1170&auto=format&fit=crop";
 
-// =====================
-// صور رمضان (ثابتة بالترتيب 30 صورة)
-// =====================
-const ramadanImages = [
-  // 1 – 16 (زي ما اتحطوا قبل كده)
-  "https://plus.unsplash.com/premium_photo-1679952778520-014159144403?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1728293955057-a36dcf226bdd?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1553755088-ef1973c7b4a1?q=80&w=1170&auto=format&fit=crop",
-  "https://plus.unsplash.com/premium_photo-1676232732108-27c7ff6dc5cd?q=80&w=1170&auto=format&fit=crop",
-  "https://plus.unsplash.com/premium_photo-1679760773027-463c7e1e773c?q=80&w=1173&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1624862300786-fcdbd20ba0c3?q=80&w=1186&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1587617425953-9075d28b8c46?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1561314945-0562f5b6d2c6?q=80&w=1171&auto=format&fit=crop",
-  "https://plus.unsplash.com/premium_photo-1676208757124-65a7e57e02cb?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1645579954839-9a91874deb4d?q=80&w=1073&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1624862301587-9f3900f0b8d1?q=80&w=1342&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1649565725805-2a85e39cf61f?q=80&w=1331&auto=format&fit=crop",
-  "https://plus.unsplash.com/premium_photo-1679952777081-62e3fee6d3a5?q=80&w=1170&auto=format&fit=crop",
-  "https://plus.unsplash.com/premium_photo-1679952779171-c0a395ce4bf4?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1558617861-07ffd51a4782?q=80&w=1170&auto=format&fit=crop",
-  "https://plus.unsplash.com/premium_photo-1679952778153-faa36584f567?q=80&w=1170&auto=format&fit=crop",
-
-  // 17 – 25
-  "https://images.unsplash.com/photo-1713463975229-f45c82ac5b5c?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1554794470-42d3cd193ecc?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1550770472-745a80f68d07?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1761958150507-7bcc80840cf9?q=80&w=1175&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1581073107630-95747d589483?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1729501055906-866167477c24?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1749971529322-ea0bc03724a9?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1752900385516-71e2b34a1a0a?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1657598329574-b093eefbc89c?q=80&w=1170&auto=format&fit=crop",
-
-  // 26 – 30 (الـ 5 صور الجديدة)
-  "https://cdn.pixabay.com/photo/2018/05/27/23/16/ramadan-3434919_1280.jpg",
-  "https://cdn.pixabay.com/photo/2020/05/07/00/32/lanterns-5139744_1280.jpg",
-  "https://cdn.pixabay.com/photo/2018/04/24/02/15/lantern-3346144_1280.jpg",
-  "https://images.unsplash.com/photo-1708991870591-d6298b9f8abc?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1763969074512-aab90cd7fde7?q=80&w=1108&auto=format&fit=crop"
-];
+const ramadanImages = new Array(30).fill(beforeRamadanImage);
 
 const eidImage = "https://egyptianstreets.com/wp-content/uploads/2020/05/kahk.jpg";
 
-// =====================
-// اللغز
-// =====================
 // =====================
 // العناصر
 // =====================
@@ -214,12 +191,12 @@ const dayEl = document.getElementById("day");
 const nameEl = document.getElementById("name");
 const textEl = document.getElementById("text");
 const footerEl = document.getElementById("footer");
+
 // =====================
 // حساب اليوم
 // =====================
 const today = new Date();
 const diffRamadan = Math.floor((today - ramadanStart)/(1000*60*60*24));
-const diffEid = Math.floor((today - eidStart)/(1000*60*60*24));
 
 // =====================
 // قبل رمضان
@@ -230,7 +207,6 @@ if(today < ramadanStart){
   nameEl.textContent = "امـــــيـــــرة";
   textEl.textContent = "كل عام وانتى بخير وفى سعادة دائمة";
   footerEl.textContent = "انتظرى ليوم 1 رمضان";
-  secretEl.textContent = "";
 }
 
 // =====================
@@ -243,31 +219,19 @@ else if(today >= ramadanStart && today < eidStart){
   nameEl.textContent = "";
   textEl.textContent = ramadanDuas[i];
   footerEl.textContent = "تقبل الله صيامك";
-  secretEl.textContent = "";
 }
 
 // =====================
-// بعد رمضان (العيد)
+// بعد رمضان
 // =====================
 else{
   bg.src = eidImage;
-
-  // العنوان
   dayEl.textContent = "عيد سعيد";
-
-  // سطر فوق العنوان
   nameEl.textContent = "كل عام وانتى بخير وبصحة";
-
-  // النص الرئيسي
   textEl.textContent = "ربنا يسعدك ويجعل ايامك كلها فرحة وعيد";
-
-  // مفيش فوتر
   footerEl.textContent = "";
-
-  // مفيش رسالة سرية
-  secretEl.textContent = "";
+  countdownEl.textContent = "";
 }
-
 </script>
 
 </body>
