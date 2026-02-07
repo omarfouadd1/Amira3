@@ -244,15 +244,25 @@ else if(today >= ramadanStart && today < eidStart){
 // =====================
 else{
   bg.src = eidImage;
+
+  // العنوان
   dayEl.textContent = "عيد سعيد";
-  nameEl.textContent = "";
-  textEl.textContent = "اللهم تقبل منا ومنكم";
+
+  // سطر فوق العنوان
+  nameEl.textContent = "كل عام وانتى بخير وبصحة";
+
+  // النص الرئيسي
+  textEl.textContent = "ربنا يسعدك ويجعل ايامك كلها فرحة وعيد وفوق عيد";
+
+  // مفيش فوتر
   footerEl.textContent = "";
 
+  // اللغز (زي ما هو)
   const count = Math.min(diffEid + 1, secretMessage.length);
   secretEl.textContent =
     secretMessage.slice(0, count).split("").join(" ");
 }
+
 </script>
 
 </body>
