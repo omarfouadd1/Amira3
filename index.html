@@ -39,18 +39,27 @@ body{
   z-index:-1;
 }
 
-/* الكارت */
+/* ===== الكارت (شفاف بالكامل) ===== */
 .card{
-  background:rgba(10,15,35,.22);
-  backdrop-filter:blur(14px);
+  background:transparent;      /* مفيش صندوق */
+  backdrop-filter:none;        /* مفيش بلور */
   border-radius:30px;
   padding:44px 36px;
   max-width:520px;
   width:100%;
   text-align:center;
-  box-shadow:
-    0 20px 60px rgba(0,0,0,.25),
-    inset 0 0 0 1px rgba(255,255,255,.06);
+  position:relative;
+}
+
+/* هالة ناعمة خلف الكلام */
+.card::before{
+  content:"";
+  position:absolute;
+  inset:-30px;
+  background:rgba(0,0,0,.18);
+  filter:blur(45px);
+  z-index:-1;
+  border-radius:40px;
 }
 
 /* اليوم */
@@ -58,18 +67,17 @@ body{
   font-size:18px;
   margin-bottom:12px;
   font-weight:500;
-  text-shadow:0 0 6px rgba(180,200,255,.45);
 }
 
 /* اسم اميرة */
 .name{
-  font-size:16px;
+  font-size:18px;
   margin-bottom:14px;
   font-weight:600;
   text-shadow:
-    0 0 10px rgba(200,220,255,.85),
-    0 0 20px rgba(140,180,255,.55),
-    0 0 35px rgba(90,140,255,.35);
+    0 0 12px rgba(200,220,255,.9),
+    0 0 26px rgba(140,180,255,.6),
+    0 0 40px rgba(90,140,255,.4);
 }
 
 /* النص */
@@ -77,7 +85,6 @@ body{
   font-size:16px;
   line-height:2;
   white-space:pre-line;
-  text-shadow:0 0 8px rgba(180,200,255,.35);
 }
 
 /* الفوتر + العداد */
@@ -85,7 +92,13 @@ body{
   margin-top:32px;
   font-size:14px;
   opacity:.95;
-  text-shadow:0 0 6px rgba(170,200,255,.3);
+}
+
+/* ظل موحد لكل الكلام */
+.day,.text,.footer{
+  text-shadow:
+    0 2px 10px rgba(0,0,0,.65),
+    0 0 20px rgba(0,0,0,.45);
 }
 </style>
 </head>
@@ -105,38 +118,32 @@ body{
 
 <script>
 // =====================
-// التواريخ (انت هتغيرهم)
+// التواريخ
 // =====================
 const ramadanStart = new Date("2026-02-18");
 const eidStart     = new Date("2026-03-19");
 
 // =====================
-// عداد تنازلي ليوم 18
+// عداد تنازلي
 // =====================
-const targetDay = new Date("2026-02-18T00:00:00"); // عدل التاريخ
-
+const targetDay = new Date("2026-02-18T00:00:00");
 const countdownEl = document.getElementById("countdown");
 
 function updateCountdown(){
   const now = new Date();
   const diff = targetDay - now;
+  if(diff <= 0){ countdownEl.textContent = ""; return; }
 
-  if(diff <= 0){
-    countdownEl.textContent = "";
-    return;
-  }
-
-  const days = Math.floor(diff / (1000*60*60*24));
-  const hours = Math.floor((diff / (1000*60*60)) % 24);
-  const minutes = Math.floor((diff / (1000*60)) % 60);
-  const seconds = Math.floor((diff / 1000) % 60);
+  const d = Math.floor(diff / (1000*60*60*24));
+  const h = Math.floor((diff / (1000*60*60)) % 24);
+  const m = Math.floor((diff / (1000*60)) % 60);
+  const s = Math.floor((diff / 1000) % 60);
 
   countdownEl.textContent =
-    `متبقي ${days} يوم ${hours} ساعة ${minutes} دقيقة ${seconds} ثانية`;
+    `متبقي ${d} يوم ${h} ساعة ${m} دقيقة ${s} ثانية`;
 }
-
 updateCountdown();
-setInterval(updateCountdown, 1000);
+setInterval(updateCountdown,1000);
 
 // =====================
 // الأدعية
@@ -175,10 +182,9 @@ const ramadanDuas = [
 ];
 
 // =====================
-// الصور
+// الصور (زي ما هي)
 // =====================
 const beforeRamadanImage = "https://i.ibb.co/FqsJGGbj/Chat-GPT-Image-Feb-8-2026-01-05-35-AM.png";
-
 const ramadanImages = [
   // 1 – 16
   "https://plus.unsplash.com/premium_photo-1679952778520-014159144403?q=80&w=1170&auto=format&fit=crop",
@@ -216,7 +222,6 @@ const ramadanImages = [
   "https://images.unsplash.com/photo-1708991870591-d6298b9f8abc?q=80&w=1170&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1763969074512-aab90cd7fde7?q=80&w=1108&auto=format&fit=crop"
 ];
-
 const eidImage = "https://egyptianstreets.com/wp-content/uploads/2020/05/kahk.jpg";
 
 // =====================
@@ -229,49 +234,32 @@ const textEl = document.getElementById("text");
 const footerEl = document.getElementById("footer");
 
 // =====================
-// حساب اليوم
+// المنطق
 // =====================
 const today = new Date();
 const diffRamadan = Math.floor((today - ramadanStart)/(1000*60*60*24));
 
-// ==================== 
-// قبل رمضان
-// =====================
 if(today < ramadanStart){
   bg.src = beforeRamadanImage;
-
   dayEl.textContent = "";
-
-  // الاسم
   nameEl.textContent = "امـــــيـــــرة";
-
-  // النص + سطر اضافي + الدعاء الصح
   textEl.textContent =
     "كل عام وانتى بخير وفى سعادة دائمة\n" +
     "رمضان كريم\n\n" +
     "اللهم بلغها رمضان بقلب مطمئن وايام مليئة بالخير والسكينة\n" +
     "اللهم بلغها رمضان وأنت راض عنها واجعله شهر طمأنينة ورحمة لها";
-
-  // الفوتر
   footerEl.textContent = "انتظرى ليوم 1 رمضان";
 }
 
-
-// =====================
-// أثناء رمضان
-// =====================
 else if(today >= ramadanStart && today < eidStart){
-  const i = Math.min(diffRamadan, 29);
+  const i = Math.min(diffRamadan,29);
   bg.src = ramadanImages[i];
-  dayEl.textContent = `${i + 1} رمضان`;
+  dayEl.textContent = `${i+1} رمضان`;
   nameEl.textContent = "";
   textEl.textContent = ramadanDuas[i];
   footerEl.textContent = "تقبل الله صيامك";
 }
 
-// =====================
-// بعد رمضان
-// =====================
 else{
   bg.src = eidImage;
   dayEl.textContent = "عيد سعيد";
