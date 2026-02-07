@@ -3,208 +3,161 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>رسالة</title>
+<title>دعوة رمضان</title>
 
 <style>
 body{
   margin:0;
   font-family:"Segoe UI",Tahoma,Arial,sans-serif;
-  background:linear-gradient(135deg,#0f172a,#1e293b,#312e81);
   min-height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
-  color:#f8fafc;
+  color:#ffffff;
   padding:16px;
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  transition:background-image 1s ease-in-out;
 }
 
-.card{
-  width:100%;
-  max-width:420px;
-  background:rgba(255,255,255,0.06);
-  backdrop-filter:blur(14px);
+.overlay{
+  background:rgba(0,0,0,0.55);
+  backdrop-filter:blur(6px);
   border-radius:24px;
-  padding:28px 22px;
+  padding:32px 26px;
+  max-width:420px;
+  width:100%;
   text-align:center;
-  box-shadow:0 25px 60px rgba(0,0,0,0.45);
-  animation:fadeIn .4s ease;
 }
 
-.hidden{display:none}
+.day{
+  font-size:20px;
+  margin-bottom:16px;
+  font-weight:600;
+}
 
-p{
-  font-size:15px;
+.duaa{
+  font-size:16px;
   line-height:2;
   white-space:pre-line;
 }
 
-button{
-  margin-top:14px;
-  padding:12px 26px;
-  border:none;
-  border-radius:999px;
-  background:#f8fafc;
-  color:#0f172a;
+.footer{
+  margin-top:20px;
   font-size:14px;
-  cursor:pointer;
-  width:100%;
-}
-
-@keyframes fadeIn{
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1;transform:none}
-}
-
-/* خاتم ايموشن */
-.ring{
-  font-size:64px;
-  margin:20px 0;
-  opacity:0;
-  transform:scale(.85);
-  animation:ringIn 1.6s ease forwards;
-}
-
-@keyframes ringIn{
-  to{
-    opacity:1;
-    transform:scale(1);
-  }
-}
-
-.summary{
-  text-align:right;
-  font-size:13px;
-  line-height:1.8;
-  color:#e5e7eb;
-  margin-top:18px;
-  border-top:1px dashed rgba(255,255,255,.25);
-  padding-top:12px;
+  opacity:.9;
 }
 </style>
 </head>
 
 <body>
 
-<div class="card">
-  <div id="content"></div>
+<div class="overlay">
+  <div id="day" class="day"></div>
+  <div id="duaa" class="duaa"></div>
+  <div class="footer">تقبل الله صيامك</div>
 </div>
 
 <script>
-const steps = [
-{
-  text:`خلينا نبدأ بهدوء
-انتي بترتاحي اكتر لايه`,
-  options:["الكلام الهادي","المساحة","الوضوح","الوقت"]
-},
-{
-  text:`لما تحسي ان في حد
-قريب بس مش واضح قوي`,
-  options:["استنى الايام توضح","افكر مع نفسي الاول","اقرب بحذر","اخد مسافة"]
-},
-{
-  text:`امتى بتحبي تختفي شوية`,
-  options:["لما احس بضغط","لما اتلخبط","لما محتاجة افكر","لما ابقى مش جاهزة"]
-},
-{
-  text:`اكتر حاجة ممكن تقلقك
-وانتي داخلة حاجة جديدة`,
-  options:["اتعلق واندم","اتفهم غلط","اخسر نفسي","الوقت يطلع مش مناسب"]
-},
-{
-  text:`علشان تحسي بالامان
-تحتاجي ايه من اللي قدامك`,
-  options:["صبر","وضوح","ثبات","كلام قليل بس صادق"]
-},
-{
-  text:`لو في حد
-قرر يكون واضح معاكي
-ويمشي على مهلك`,
-  options:["ممكن ادي فرصة","محتاجة وقت اكتر","نخلي الامور زي ما هي","مش جاهزة دلوقتي"]
-}
+// =============================
+// عدل تاريخ اول يوم رمضان هنا
+// =============================
+const ramadanStart = new Date("2026-03-01");
+
+// =============================
+// الادعية (30 يوم)
+// =============================
+const duas = [
+"اللهم يا مقلب القلوب\nثبت قلبها على دينك",
+"اللهم اهد قلبها\nوسدد امرها\nواكتب لها الخير حيث كان",
+"اللهم اجعل لها من كل هم فرجا\nومن كل ضيق مخرجا",
+"اللهم ارزقها طمأنينة القلب\nوسكينة النفس\nوحسن التوكل عليك",
+"اللهم اغفر لها ذنبها\nويسر امرها\nواشرح صدرها",
+"اللهم احفظها بحفظك\nولا تكلها الى نفسها طرفة عين",
+"اللهم ارزقها علما نافعا\nورزقا طيبا\nوعملا متقبلا",
+"اللهم اجعل عاقبة امورها خيرا\nواكتب لها الخير في اختياراتها",
+"اللهم اجعلها من عبادك الصالحين\nووفقها لما تحب وترضى",
+"اللهم ازرع في قلبها الرضا\nواصرف عنها السخط والجزع",
+"اللهم اصلح لها شأنها كله\nولا تكلها الى نفسها",
+"اللهم اجعل القرآن ربيع قلبها\nونور صدرها\nوجلاء همها",
+"اللهم ارزقها حسن الظن بك\nوحسن التوكل عليك",
+"اللهم اشرح صدرها\nويسر امرها\nواكتب لها السداد",
+"اللهم ارزقها الصبر عند البلاء\nوالشكر عند الرخاء",
+"اللهم احسن لها امورها كلها\nويسر لها ما تعسر\nواكتب لها الخير حيث كان",
+"اللهم اجعلها من الذاكرين لك كثيرا\nوالذاكرات",
+"اللهم قها الفتن\nواكتب لها السلامة\nوالطمأنينة",
+"اللهم ارزقها قلبا سليما\nولسانا صادقا\nوعملا صالحا",
+"اللهم اكتب لها الخير\nويسره لها\nوطمئن قلبها به",
+"اللهم اجعلها ممن رضيت عنهم\nوغفرت لهم\nوكتبت لهم القبول",
+"اللهم ارزقها الاخلاص\nفي القول والعمل",
+"اللهم اجعلها من اهل العفو والصفح\nوحسن الخلق",
+"اللهم اغفر لها\nووسع لها في رزقها\nواجعل ايامها خيرًا وبركة",
+"اللهم لا تجعل في قلبها غلا\nولا هما\nولا حزنا",
+"اللهم ارزقها راحة القلب\nوسلامة الصدر",
+"اللهم وفقها لما فيه\nصلاح دينها ودنياها",
+"اللهم اجعل لها نصيبا\nمن رحمتك ومغفرتك ورضوانك",
+"اللهم تقبل منها صالح الاعمال\nوتجاوز عن السيئات",
+"اللهم اختم لها رمضان\nبالمغفرة والقبول\nوالعتق من النار"
 ];
 
-let i=0;
-const answers=[];
-const content=document.getElementById("content");
+// =============================
+// صور الخلفية (30 صورة رمضانية)
+// =============================
+const backgrounds = [
+"https://images.unsplash.com/photo-1542816417-0983c9c9ad53",
+"https://images.unsplash.com/photo-1581262171119-4f39b5a1b0b4",
+"https://images.unsplash.com/photo-1584515933487-779824d29309",
+"https://images.unsplash.com/photo-1603052875357-4f8b53b5a42c",
+"https://images.unsplash.com/photo-1605286978633-63b35b01a7e3",
+"https://images.unsplash.com/photo-1614594975525-e45190c55d1b",
+"https://images.unsplash.com/photo-1616680214084-2263d97c8c1b",
+"https://images.unsplash.com/photo-1616356601595-ff38d4cfa0e0",
+"https://images.unsplash.com/photo-1618220179428-22790b461013",
+"https://images.unsplash.com/photo-1614846334324-0c48d87a3c3a",
 
-function render(){
-  const step=steps[i];
-  let html=`<p>${step.text}</p>`;
-  step.options.forEach(opt=>{
-    html+=`<button onclick="choose('${opt}')">${opt}</button>`;
-  });
-  content.innerHTML=html;
+"https://images.unsplash.com/photo-1542377284383-4aab66c57d44",
+"https://images.unsplash.com/photo-1600377984037-0a9c55e50a0b",
+"https://images.unsplash.com/photo-1599946347371-68eb71b16afc",
+"https://images.unsplash.com/photo-1598023696416-0193a0bcd302",
+"https://images.unsplash.com/photo-1600096194534-95cf5ece04cf",
+"https://images.unsplash.com/photo-1610210324008-4c6b6d15a0f3",
+"https://images.unsplash.com/photo-1612159308029-3a5c4fcbbe89",
+"https://images.unsplash.com/photo-1589652717521-10c0d092dea9",
+"https://images.unsplash.com/photo-1611095564985-efc3d1f1c2b2",
+"https://images.unsplash.com/photo-1611312449408-fcece27cdbb7",
+
+"https://images.unsplash.com/photo-1596815064285-45ed8a9c0463",
+"https://images.unsplash.com/photo-1584467735815-f778f274c66f",
+"https://images.unsplash.com/photo-1615474634824-f45fbfef0c16",
+"https://images.unsplash.com/photo-1588514899099-e2df6951dde1",
+"https://images.unsplash.com/photo-1602490962990-9f45f95e1c64",
+"https://images.unsplash.com/photo-1616531770192-6b4c9a57e89f",
+"https://images.unsplash.com/photo-1585747860715-2ba37e788b70",
+"https://images.unsplash.com/photo-1580906855285-76fbbf2fda63",
+"https://images.unsplash.com/photo-1615840287214-7ff58936f6a9",
+"https://images.unsplash.com/photo-1580674285054-bed31e145f59"
+];
+
+// =============================
+// الحساب
+// =============================
+function getRamadanIndex(){
+  const today = new Date();
+  const diff = Math.floor((today - ramadanStart) / (1000*60*60*24));
+  if(diff < 0) return 0;
+  if(diff >= 30) return 29;
+  return diff;
 }
 
-function choose(ans){
-  answers.push({q:steps[i].text,a:ans});
-  i++;
-  if(i<steps.length){
-    render();
-  }else{
-    end(ans);
-  }
-}
+const index = getRamadanIndex();
 
-function end(last){
-  let html="";
-
-  if(last==="ممكن ادي فرصة"){
-    html=`
-    <p>
-الاختيارات اللي بتيجي على مهل
-غالبا بتوصل صح
-    </p>
-
-    <div class="ring">💍</div>
-
-    <p>
-ده اختيار شجاع
-ومحترم
-    </p>
-    `;
-  }else if(last==="محتاجة وقت اكتر"){
-    html=`
-    <p>
-الوقت مش عدو
-والحاجات اللي بتاخد وقت
-بتستاهل
-    </p>`;
-  }else if(last==="نخلي الامور زي ما هي"){
-    html=`
-    <p>
-الراحة اختيار
-واحترامها
-اهم من اي حاجة
-    </p>`;
-  }else{
-    html=`
-    <p>
-الوضوح حتى في الرفض
-حاجة تستحق التقدير
-    </p>`;
-  }
-
-  html+=`<p id="title">رسالة</p>`;
-  content.innerHTML=html;
-
-  // زر ملخص مخفي (ضغط مطول)
-  let timer;
-  const title=document.getElementById("title");
-  title.addEventListener("mousedown",()=>timer=setTimeout(showSummary,1500));
-  title.addEventListener("mouseup",()=>clearTimeout(timer));
-}
-
-function showSummary(){
-  let s="<div class='summary'><strong>ملخص الرحلة</strong><br>";
-  answers.forEach((x,idx)=>{
-    s+=`س${idx+1}: ${x.a}<br>`;
-  });
-  s+="</div>";
-  content.innerHTML+=s;
-}
-
-render();
+// =============================
+// العرض
+// =============================
+document.getElementById("day").textContent = `${index + 1} رمضان`;
+document.getElementById("duaa").textContent = duas[index];
+document.body.style.backgroundImage = `url('${backgrounds[index]}')`;
 </script>
 
 </body>
