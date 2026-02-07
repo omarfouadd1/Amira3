@@ -15,7 +15,7 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  color:#fff;
+  color:#f8fbff;
   padding:16px;
   overflow:hidden;
 }
@@ -35,44 +35,63 @@ body{
 .overlay{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.55);
+  background:rgba(5,10,25,.6);
   z-index:-1;
 }
 
 /* الكارت */
 .card{
-  background:rgba(0,0,0,.35);
-  backdrop-filter:blur(8px);
+  background:rgba(10,15,35,.35);
+  backdrop-filter:blur(10px);
   border-radius:24px;
-  padding:32px 26px;
+  padding:34px 28px;
   max-width:420px;
   width:100%;
   text-align:center;
 }
 
+/* اليوم */
 .day{
-  font-size:20px;
-  margin-bottom:14px;
-  font-weight:600;
+  font-size:18px;
+  margin-bottom:12px;
+  font-weight:500;
+  text-shadow:0 0 6px rgba(180,200,255,.45);
 }
 
+/* اسم اميرة */
+.name{
+  font-size:16px;
+  margin-bottom:14px;
+  font-weight:600;
+  text-shadow:
+    0 0 10px rgba(200,220,255,.85),
+    0 0 20px rgba(140,180,255,.55),
+    0 0 35px rgba(90,140,255,.35);
+}
+
+/* النص */
 .text{
   font-size:16px;
   line-height:2;
+  white-space:pre-line;
+  text-shadow:0 0 8px rgba(180,200,255,.35);
 }
 
+/* الفوتر */
 .footer{
-  margin-top:32px; /* ده اللي بينزلها لتحت */
+  margin-top:32px;
   font-size:14px;
-  opacity:.9;
+  opacity:.95;
+  text-shadow:0 0 6px rgba(170,200,255,.3);
 }
 
-
+/* اللغز */
 .secret{
   margin-top:18px;
   font-size:14px;
   letter-spacing:4px;
-  opacity:.6;
+  opacity:.7;
+  text-shadow:0 0 10px rgba(180,210,255,.6);
 }
 </style>
 </head>
@@ -84,6 +103,7 @@ body{
 
 <div class="card">
   <div id="day" class="day"></div>
+  <div id="name" class="name"></div>
   <div id="text" class="text"></div>
   <div id="footer" class="footer"></div>
   <div id="secret" class="secret"></div>
@@ -91,13 +111,13 @@ body{
 
 <script>
 // =====================
-// التواريخ (عدّل لاحقًا)
+// التواريخ (انت هتغيرهم)
 // =====================
 const ramadanStart = new Date("2026-03-01");
 const eidStart     = new Date("2026-03-31");
 
 // =====================
-// الأدعية (كما أرسلتها حرفيًا)
+// الأدعية (نهائية)
 // =====================
 const ramadanDuas = [
 "اللهم يا مقلب القلوب ثبت قلبها على دينك",
@@ -133,24 +153,47 @@ const ramadanDuas = [
 ];
 
 // =====================
-// الصور (Unsplash – مضمونة)
+// الصور (Placeholder – انت هتحط اللينكات)
 // =====================
+const beforeRamadanImage = "BEFORE_RAMADAN_IMAGE_URL";
 
-// قبل رمضان
-const beforeRamadanImage =
-"https://plus.unsplash.com/premium_photo-1677956021669-20dd6af2ae29?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+const ramadanImages = [
+  "RAMADAN_DAY_1_IMAGE_URL",
+  "RAMADAN_DAY_2_IMAGE_URL",
+  "RAMADAN_DAY_3_IMAGE_URL",
+  "RAMADAN_DAY_4_IMAGE_URL",
+  "RAMADAN_DAY_5_IMAGE_URL",
+  "RAMADAN_DAY_6_IMAGE_URL",
+  "RAMADAN_DAY_7_IMAGE_URL",
+  "RAMADAN_DAY_8_IMAGE_URL",
+  "RAMADAN_DAY_9_IMAGE_URL",
+  "RAMADAN_DAY_10_IMAGE_URL",
+  "RAMADAN_DAY_11_IMAGE_URL",
+  "RAMADAN_DAY_12_IMAGE_URL",
+  "RAMADAN_DAY_13_IMAGE_URL",
+  "RAMADAN_DAY_14_IMAGE_URL",
+  "RAMADAN_DAY_15_IMAGE_URL",
+  "RAMADAN_DAY_16_IMAGE_URL",
+  "RAMADAN_DAY_17_IMAGE_URL",
+  "RAMADAN_DAY_18_IMAGE_URL",
+  "RAMADAN_DAY_19_IMAGE_URL",
+  "RAMADAN_DAY_20_IMAGE_URL",
+  "RAMADAN_DAY_21_IMAGE_URL",
+  "RAMADAN_DAY_22_IMAGE_URL",
+  "RAMADAN_DAY_23_IMAGE_URL",
+  "RAMADAN_DAY_24_IMAGE_URL",
+  "RAMADAN_DAY_25_IMAGE_URL",
+  "RAMADAN_DAY_26_IMAGE_URL",
+  "RAMADAN_DAY_27_IMAGE_URL",
+  "RAMADAN_DAY_28_IMAGE_URL",
+  "RAMADAN_DAY_29_IMAGE_URL",
+  "RAMADAN_DAY_30_IMAGE_URL"
+];
 
-// رمضان – 30 صورة ثابتة لكل يوم
-const ramadanImages = Array.from({length:30}, (_,i)=>
-  `https://source.unsplash.com/1600x900/?ramadan,islam,mosque&sig=${i+1}`
-);
-
-// العيد
-const eidImage =
-"https://source.unsplash.com/1600x900/?eid,celebration";
+const eidImage = "EID_IMAGE_URL";
 
 // =====================
-// اللغز بعد العيد
+// اللغز
 // =====================
 const secretMessage = "ربنايديموجودكفيحياتي";
 
@@ -159,6 +202,7 @@ const secretMessage = "ربنايديموجودكفيحياتي";
 // =====================
 const bg = document.getElementById("bg");
 const dayEl = document.getElementById("day");
+const nameEl = document.getElementById("name");
 const textEl = document.getElementById("text");
 const footerEl = document.getElementById("footer");
 const secretEl = document.getElementById("secret");
@@ -176,8 +220,8 @@ const diffEid = Math.floor((today - eidStart)/(1000*60*60*24));
 if(today < ramadanStart){
   bg.src = beforeRamadanImage;
   dayEl.textContent = "";
-  textEl.textContent =
-"اميرة\nكل عام وانتى بخير وفى سعادة دائمة";
+  nameEl.textContent = "اميرة";
+  textEl.textContent = "كل عام وانتى بخير وفى سعادة دائمة";
   footerEl.textContent = "انتظرى ليوم 1 رمضان";
   secretEl.textContent = "";
 }
@@ -189,6 +233,7 @@ else if(today >= ramadanStart && today < eidStart){
   const i = Math.min(diffRamadan, 29);
   bg.src = ramadanImages[i];
   dayEl.textContent = `${i + 1} رمضان`;
+  nameEl.textContent = "";
   textEl.textContent = ramadanDuas[i];
   footerEl.textContent = "تقبل الله صيامك";
   secretEl.textContent = "";
@@ -200,6 +245,7 @@ else if(today >= ramadanStart && today < eidStart){
 else{
   bg.src = eidImage;
   dayEl.textContent = "عيد سعيد";
+  nameEl.textContent = "";
   textEl.textContent = "اللهم تقبل منا ومنكم";
   footerEl.textContent = "";
 
