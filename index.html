@@ -106,7 +106,6 @@ body{
   <div id="name" class="name"></div>
   <div id="text" class="text"></div>
   <div id="footer" class="footer"></div>
-  <div id="secret" class="secret"></div>
 </div>
 
 <script>
@@ -203,8 +202,6 @@ const eidImage = "https://egyptianstreets.com/wp-content/uploads/2020/05/kahk.jp
 // =====================
 // اللغز
 // =====================
-const secretMessage = "ربنايديموجودكفيحياتي";
-
 // =====================
 // العناصر
 // =====================
@@ -213,8 +210,6 @@ const dayEl = document.getElementById("day");
 const nameEl = document.getElementById("name");
 const textEl = document.getElementById("text");
 const footerEl = document.getElementById("footer");
-const secretEl = document.getElementById("secret");
-
 // =====================
 // حساب اليوم
 // =====================
@@ -265,10 +260,8 @@ else{
   // مفيش فوتر
   footerEl.textContent = "";
 
-  // اللغز (زي ما هو)
-  const count = Math.min(diffEid + 1, secretMessage.length);
-  secretEl.textContent =
-    secretMessage.slice(0, count).split("").join(" ");
+  // مفيش رسالة سرية
+  secretEl.textContent = "";
 }
 
 </script>
