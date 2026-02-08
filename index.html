@@ -219,11 +219,14 @@ const heartEl = document.getElementById("heart");
 // =====================
 // العداد
 // =====================
-function formatUnit(v,s,d,p){
-  if(v===0) return "";
-  if(v===1) return s;
-  if(v===2) return d;
-  return `${v} ${p}`;
+function formatUnit(v, one, two, few, many){
+  if(v === 0) return "";
+  if(v === 1) return one;
+  if(v === 2) return two;
+
+  if(v >= 3 && v <= 10) return `${v} ${few}`;
+
+  return `${v} ${many}`;
 }
 
 let timer=null;
@@ -247,13 +250,16 @@ function updateCountdown(){
   const m=Math.floor(diff/60000)%60;
   const s=Math.floor(diff/1000)%60;
 
-  countdownEl.textContent=
-    "فاضل "+
-    [formatUnit(d,"يوم","يومين","أيام"),
-     formatUnit(h,"ساعة","ساعتين","ساعات"),
-     formatUnit(m,"دقيقة","دقيقتين","دقائق"),
-     formatUnit(s,"ثانية","ثانيتين","ثواني")]
-    .filter(Boolean).join(" و ");
+  countdownEl.textContent =
+  "فاضل " +
+  [
+    formatUnit(d,"يوم","يومين","أيام","يوم"),
+    formatUnit(h,"ساعة","ساعتين","ساعات","ساعة"),
+    formatUnit(m,"دقيقة","دقيقتين","دقائق","دقيقة"),
+    formatUnit(s,"ثانية","ثانيتين","ثواني","ثانية")
+  ]
+  .filter(Boolean)
+  .join(" و ");
 
   moonEl.style.opacity = d<=7?1:0;
   heartEl.style.opacity = d<=3?1:0;
