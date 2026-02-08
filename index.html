@@ -217,28 +217,48 @@ const moonEl = document.getElementById("moon");
 const heartEl = document.getElementById("heart");
 
 // =====================
-// العداد
+// عداد تنازلي ليوم 18
 // =====================
+const targetDay = new Date("2026-02-18T00:00:00"); // عدل التاريخ لو حابب
+const countdownEl = document.getElementById("countdown");
+
+// دالة ضبط الصياغة العربية
+function formatUnit(value, singular, dual, plural){
+  if(value === 0) return "";
+  if(value === 1) return `1 ${singular}`;
+  if(value === 2) return `${dual}`;
+  if(value >= 3 && value <= 10) return `${value} ${plural}`;
+  return `${value} ${singular}`;
+}
+
 function updateCountdown(){
   const now = new Date();
   const diff = targetDay - now;
-  if(diff <= 0){countdownEl.textContent="";return;}
 
-  const d = Math.floor(diff/(1000*60*60*24));
-  const h = Math.floor((diff/(1000*60*60))%24);
-  const m = Math.floor((diff/(1000*60))%60);
-  const s = Math.floor((diff/1000)%60);
+  if(diff <= 0){
+    countdownEl.textContent = "";
+    return;
+  }
 
-  let dayWord = d>2?`${d} ايام`:d===2?"يومين":d===1?"يوم":"";
-  countdownEl.textContent =
-    d>0?`فاضل ${dayWord} و ${h} ساعة و ${m} دقيقة و ${s} ثانية`
-        :`فاضل ${h} ساعة و ${m} دقيقة و ${s} ثانية`;
+  const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const m = Math.floor((diff / (1000 * 60)) % 60);
+  const s = Math.floor((diff / 1000) % 60);
 
-  moonEl.style.opacity = d<=7?1:0;
-  heartEl.style.opacity = d<=3?1:0;
+  const daysText    = formatUnit(d, "يوم", "يومين", "أيام");
+  const hoursText   = formatUnit(h, "ساعة", "ساعتين", "ساعات");
+  const minutesText = formatUnit(m, "دقيقة", "دقيقتين", "دقائق");
+  const secondsText = formatUnit(s, "ثانية", "ثانيتين", "ثواني");
+
+  const parts = [daysText, hoursText, minutesText, secondsText].filter(Boolean);
+
+  countdownEl.textContent = `فاضل ${parts.join(" و ")}`;
 }
+
+// تشغيل العداد
 updateCountdown();
-setInterval(updateCountdown,1000);
+setInterval(updateCountdown, 1000);
+
 
 // =====================
 // المنطق
