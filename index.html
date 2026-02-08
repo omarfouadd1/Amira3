@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -39,10 +39,9 @@ body{
   z-index:-1;
 }
 
-/* الكارت شفاف */
+/* الكارت */
 .card{
   background:transparent;
-  backdrop-filter:none;
   border-radius:30px;
   padding:44px 36px;
   max-width:520px;
@@ -51,7 +50,6 @@ body{
   position:relative;
 }
 
-/* هالة خفيفة */
 .card::before{
   content:"";
   position:absolute;
@@ -62,7 +60,6 @@ body{
   border-radius:40px;
 }
 
-/* النصوص */
 .day{font-size:18px;margin-bottom:12px;}
 .name{
   font-size:18px;
@@ -89,7 +86,6 @@ body{
     0 0 20px rgba(0,0,0,.45);
 }
 
-/* القلب */
 #heart{
   animation:pulse 1.6s infinite;
 }
@@ -103,7 +99,7 @@ body{
 
 <body>
 
-<img id="bg" class="bg" alt="">
+<img id="bg" class="bg">
 <div class="overlay"></div>
 
 <div class="card">
@@ -112,8 +108,8 @@ body{
   <div id="text" class="text"></div>
   <div id="footer" class="footer"></div>
   <div id="countdown" class="footer"></div>
-  <div id="moon" class="footer" style="font-size:26px;opacity:0;">🌙</div>
-  <div id="heart" class="footer" style="font-size:22px;opacity:0;">❤️</div>
+  <div id="moon" class="footer" style="font-size:26px;opacity:.9;">🌙</div>
+  <div id="heart" class="footer" style="font-size:22px;">❤️</div>
 </div>
 
 <script>
@@ -125,45 +121,52 @@ const eidStart     = new Date("2026-03-19");
 const targetDay    = new Date("2026-02-18T00:00:00");
 
 // =====================
-// الأدعية
+// العناصر
 // =====================
-const ramadanDuas = [
-"اللهم يا مقلب القلوب ثبت قلبها على دينك",
-"اللهم اهد قلبها وسدد امرها",
-"اللهم اجعل لها من كل هم فرجا",
-"اللهم ارزقها طمأنينة القلب",
-"اللهم اغفر لها وشرح صدرها",
-"اللهم احفظها ولا تكلها لنفسها",
-"اللهم ارزقها علما نافعا",
-"اللهم اكتب لها الخير في اختياراتها",
-"اللهم اجعلها من عبادك الصالحين",
-"اللهم ازرع في قلبها الرضا",
-"اللهم اصلح لها شأنها كله",
-"اللهم اجعل القرآن ربيع قلبها",
-"اللهم ارزقها حسن الظن بك",
-"اللهم يسر امرها واكتب لها السداد",
-"اللهم ارزقها الصبر والسكينة",
-"اللهم احسن لها امورها كلها",
-"اللهم اجعلها من الذاكرين",
-"اللهم اكتب لها السلامة",
-"اللهم ارزقها قلبا سليما",
-"اللهم طمئن قلبها بالخير",
-"اللهم اجعلها ممن رضيت عنهم",
-"اللهم ارزقها الاخلاص",
-"اللهم اجعلها من اهل العفو",
-"اللهم وسع لها في رزقها",
-"اللهم ابعد عنها الحزن",
-"اللهم ارزقها راحة القلب",
-"اللهم وفقها لصلاح امورها",
-"اللهم اجعل لها نصيبا من رحمتك",
-"اللهم تقبل منها صالح الاعمال",
-"اللهم اختم لها رمضان بالقبول"
-];
+const bg = document.getElementById("bg");
+const dayEl = document.getElementById("day");
+const nameEl = document.getElementById("name");
+const textEl = document.getElementById("text");
+const footerEl = document.getElementById("footer");
+const countdownEl = document.getElementById("countdown");
 
 // =====================
-// الصور (كما هي)
+// العداد
 // =====================
-const beforeRamadanImage = "https://i.ibb.co/FqsJGGbj/Chat-GPT-Image-Feb-8-2026-01-05-35-AM.png";
+function formatUnit(v,s,d,p){
+  if(v===0) return "";
+  if(v===1) return s;
+  if(v===2) return d;
+  if(v<=10) return `${v} ${p}`;
+  return `${v} ${s}`;
+}
+
+function updateCountdown(){
+  const diff = targetDay - new Date();
+  if(diff<=0){countdownEl.textContent="";return;}
+
+  const d=Math.floor(diff/86400000);
+  const h=Math.floor(diff/3600000)%24;
+  const m=Math.floor(diff/60000)%60;
+  const s=Math.floor(diff/1000)%60;
+
+  const parts=[
+    formatUnit(d,"يوم","يومين","أيام"),
+    formatUnit(h,"ساعة","ساعتين","ساعات"),
+    formatUnit(m,"دقيقة","دقيقتين","دقائق"),
+    formatUnit(s,"ثانية","ثانيتين","ثواني")
+  ].filter(Boolean);
+
+  countdownEl.textContent=`فاضل ${parts.join(" و ")}`;
+}
+
+updateCountdown();
+setInterval(updateCountdown,1000);
+
+// =====================
+// الصور (30 صورة زي ما هي)
+// =====================
+const beforeRamadanImage="https://i.ibb.co/FqsJGGbj/Chat-GPT-Image-Feb-8-2026-01-05-35-AM.png";
 const ramadanImages = [
   // 1 – 16
   "https://plus.unsplash.com/premium_photo-1679952778520-014159144403?q=80&w=1170&auto=format&fit=crop",
@@ -202,94 +205,34 @@ const ramadanImages = [
   "https://images.unsplash.com/photo-1763969074512-aab90cd7fde7?q=80&w=1108&auto=format&fit=crop"
 ];
 
-const eidImage = "https://egyptianstreets.com/wp-content/uploads/2020/05/kahk.jpg";
-
-// =====================
-// العناصر
-// =====================
-const bg = document.getElementById("bg");
-const dayEl = document.getElementById("day");
-const nameEl = document.getElementById("name");
-const textEl = document.getElementById("text");
-const footerEl = document.getElementById("footer");
-const countdownEl = document.getElementById("countdown");
-const moonEl = document.getElementById("moon");
-const heartEl = document.getElementById("heart");
-
-// =====================
-// عداد تنازلي ليوم 18
-// =====================
-const targetDay = new Date("2026-02-18T00:00:00");
-const countdownEl = document.getElementById("countdown");
-
-// دالة ضبط الصياغة العربية
-function formatUnit(value, singular, dual, plural){
-  if(value === 0) return "";
-  if(value === 1) return `${singular}`;
-  if(value === 2) return `${dual}`;
-  if(value >= 3 && value <= 10) return `${value} ${plural}`;
-  return `${value} ${singular}`;
-}
-
-function updateCountdown(){
-  const now = new Date();
-  const diff = targetDay - now;
-
-  if(diff <= 0){
-    countdownEl.textContent = "";
-    return;
-  }
-
-  const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const m = Math.floor((diff / (1000 * 60)) % 60);
-  const s = Math.floor((diff / 1000) % 60);
-
-  const daysText    = formatUnit(d, "يوم", "يومين", "أيام");
-  const hoursText   = formatUnit(h, "ساعة", "ساعتين", "ساعات");
-  const minutesText = formatUnit(m, "دقيقة", "دقيقتين", "دقائق");
-  const secondsText = formatUnit(s, "ثانية", "ثانيتين", "ثواني");
-
-  const parts = [daysText, hoursText, minutesText, secondsText].filter(Boolean);
-
-  countdownEl.textContent = `فاضل ${parts.join(" و ")}`;
-}
-
-// تشغيل العداد
-updateCountdown();
-setInterval(updateCountdown, 1000);
-
-
+const eidImage="https://egyptianstreets.com/wp-content/uploads/2020/05/kahk.jpg";
 
 // =====================
 // المنطق
 // =====================
-const today = new Date();
-const diffRamadan = Math.floor((today-ramadanStart)/(1000*60*60*24));
+const today=new Date();
+const diffRamadan=Math.floor((today-ramadanStart)/86400000);
 
-if(today < ramadanStart){
-  bg.src = beforeRamadanImage;
-  nameEl.textContent = "امـــــيـــــرة";
-  textEl.textContent =
-    "كل عام وانتى بخير وفى سعادة دائمة\nرمضان كريم\n\n"+
-    "اللهم بلغها رمضان بقلب مطمئن وايام مليئة بالخير والسكينة\n"+
-    "اللهم بلغها رمضان وأنت راض عنها واجعله شهر طمأنينة وراحة لها";
-  footerEl.textContent = "انتظرى ليوم 1 رمضان";
+if(today<ramadanStart){
+  bg.src=beforeRamadanImage;
+  nameEl.textContent="امـــــيـــــرة";
+  textEl.textContent=
+"كل عام وانتى بخير وفى سعادة دائمة\nرمضان كريم\n\n"+
+"اللهم بلغها رمضان بقلب مطمئن وايام مليئة بالخير والسكينة\n"+
+"اللهم بلغها رمضان وأنت راض عنها واجعله شهر طمأنينة وراحة لها";
+  footerEl.textContent="انتظرى ليوم 1 رمضان";
 }
-else if(today >= ramadanStart && today < eidStart){
-  const i = Math.min(diffRamadan,29);
-  bg.src = ramadanImages[i];
-  dayEl.textContent = `${i+1} رمضان`;
-  textEl.textContent = ramadanDuas[i];
-  footerEl.textContent = " تقبل الله صيامك واستجاب دعائك وفتح لك أبواب الخير ";
+else if(today<eidStart){
+  const i=Math.min(diffRamadan,29);
+  bg.src=ramadanImages[i];
+  dayEl.textContent=`${i+1} رمضان`;
+  textEl.textContent="تقبل الله صيامك واستجاب دعائك";
 }
 else{
-  bg.src = eidImage;
-  dayEl.textContent = "عيد سعيد";
-  nameEl.textContent = "كل عام وانتى بخير وبصحة";
-  textEl.textContent = "ربنا يسعدك ويجعل ايامك كلها فرحة وعيد";
-  footerEl.textContent = "";
-  countdownEl.textContent = "";
+  bg.src=eidImage;
+  dayEl.textContent="عيد سعيد";
+  nameEl.textContent="كل عام وانتى بخير وبصحة";
+  textEl.textContent="ربنا يسعدك ويجعل ايامك كلها فرحة وعيد";
 }
 </script>
 
