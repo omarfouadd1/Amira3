@@ -124,10 +124,17 @@ body{
 // =====================
 // التواريخ
 // =====================
-const ramadanStart = new Date("2026-02-18");
+const ramadanStart = new Date("2026-02-19");
 const eidStart     = new Date("2026-03-19");
 const targetDay    = new Date("2026-02-19T00:00:00");
 
+  function getEgyptTime(){
+  const now = new Date();
+  const egyptTime = new Date(
+    now.toLocaleString("en-US", { timeZone: "Africa/Cairo" })
+  );
+  return egyptTime;
+}
 // =====================
 // الأدعية
 // =====================
