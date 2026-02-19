@@ -20,7 +20,6 @@ body{
   overflow:hidden;
 }
 
-/* الخلفية */
 .bg{
   position:fixed;
   inset:0;
@@ -30,7 +29,6 @@ body{
   z-index:-2;
 }
 
-/* طبقة تغميق */
 .overlay{
   position:fixed;
   inset:0;
@@ -38,7 +36,6 @@ body{
   z-index:-1;
 }
 
-/* الكارت */
 .card{
   background:transparent;
   padding:44px 36px;
@@ -48,7 +45,6 @@ body{
   position:relative;
 }
 
-/* هالة */
 .card::before{
   content:"";
   position:absolute;
@@ -59,8 +55,8 @@ body{
   border-radius:40px;
 }
 
-/* النصوص */
 .day{font-size:18px;margin-bottom:12px;}
+
 .name{
   font-size:18px;
   margin-bottom:14px;
@@ -70,11 +66,13 @@ body{
     0 0 26px rgba(140,180,255,.6),
     0 0 40px rgba(90,140,255,.4);
 }
+
 .text{
   font-size:16px;
   line-height:2;
   white-space:pre-line;
 }
+
 .footer{
   margin-top:18px;
   font-size:14px;
@@ -82,25 +80,12 @@ body{
 
 .day,.text,.footer{
   text-shadow:
-    /* إطار أسود خفيف */
     -1px -1px 0 #000,
      1px -1px 0 #000,
     -1px  1px 0 #000,
      1px  1px 0 #000,
-
-    /* الظل الناعم اللي كان موجود */
     0 2px 10px rgba(0,0,0,.65),
     0 0 20px rgba(0,0,0,.45);
-}
-
-/* القلب */
-#heart{
-  animation:pulse 1.6s infinite;
-}
-@keyframes pulse{
-  0%{transform:scale(1);opacity:.6}
-  50%{transform:scale(1.2);opacity:1}
-  100%{transform:scale(1);opacity:.6}
 }
 </style>
 </head>
@@ -115,28 +100,27 @@ body{
   <div id="name" class="name"></div>
   <div id="text" class="text"></div>
   <div id="footer" class="footer"></div>
-  <div id="countdown" class="footer"></div>
-  <div id="moon" class="footer" style="font-size:26px;opacity:0;">🌙</div>
-  <div id="heart" class="footer" style="font-size:22px;opacity:0;">❤️</div>
 </div>
 
 <script>
-// =====================
-// التواريخ
-// =====================
-const ramadanStart = new Date("2026-02-18");
-const eidStart     = new Date("2026-03-19");
-const targetDay    = new Date("2026-02-19T00:00:00");
 
-  function getEgyptTime(){
-  const now = new Date();
-  const egyptTime = new Date(
-    now.toLocaleString("en-US", { timeZone: "Africa/Cairo" })
-  );
-  return egyptTime;
-}
 // =====================
-// الأدعية
+// التواريخ (19 فبراير = 1 رمضان)
+// =====================
+const ramadanStart = new Date(2026,1,19);
+const eidStart     = new Date(2026,2,19);
+
+ramadanStart.setHours(0,0,0,0);
+eidStart.setHours(0,0,0,0);
+
+function getToday(){
+  const t=new Date();
+  t.setHours(0,0,0,0);
+  return t;
+}
+
+// =====================
+// الأدعية (30 دعاء)
 // =====================
 const ramadanDuas = [
 "اللهم يا من تعلم ما في قلبها، اجعل فيه نورا دائما، وراحة لا تزول، وقربا منك يطمئنها.",
@@ -171,154 +155,84 @@ const ramadanDuas = [
 "اللهم اختم لها رمضان بالقبول، والعتق من النار، والقرب منك"
 ];
 
-
 // =====================
-// الصور (30 صورة كما هي)
+// الصور (30 صورة زي ما انت حاططهم)
 // =====================
-const beforeRamadanImage = "https://i.ibb.co/FqsJGGbj/Chat-GPT-Image-Feb-8-2026-01-05-35-AM.png";
+const beforeRamadanImage="https://i.ibb.co/FqsJGGbj/Chat-GPT-Image-Feb-8-2026-01-05-35-AM.png";
 
-const ramadanImages = [
-  "https://plus.unsplash.com/premium_photo-1679952778520-014159144403?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1728293955057-a36dcf226bdd?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1553755088-ef1973c7b4a1?q=80&w=1170&auto=format&fit=crop",
-  "https://plus.unsplash.com/premium_photo-1676232732108-27c7ff6dc5cd?q=80&w=1170&auto=format&fit=crop",
-  "https://plus.unsplash.com/premium_photo-1679760773027-463c7e1e773c?q=80&w=1173&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1624862300786-fcdbd20ba0c3?q=80&w=1186&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1587617425953-9075d28b8c46?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1561314945-0562f5b6d2c6?q=80&w=1171&auto=format&fit=crop",
-  "https://plus.unsplash.com/premium_photo-1676208757124-65a7e57e02cb?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1645579954839-9a91874deb4d?q=80&w=1073&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1624862301587-9f3900f0b8d1?q=80&w=1342&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1649565725805-2a85e39cf61f?q=80&w=1331&auto=format&fit=crop",
-  "https://plus.unsplash.com/premium_photo-1679952777081-62e3fee6d3a5?q=80&w=1170&auto=format&fit=crop",
-  "https://plus.unsplash.com/premium_photo-1679952779171-c0a395ce4bf4?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1558617861-07ffd51a4782?q=80&w=1170&auto=format&fit=crop",
-  "https://plus.unsplash.com/premium_photo-1679952778153-faa36584f567?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1713463975229-f45c82ac5b5c?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1554794470-42d3cd193ecc?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1550770472-745a80f68d07?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1761958150507-7bcc80840cf9?q=80&w=1175&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1581073107630-95747d589483?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1729501055906-866167477c24?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1749971529322-ea0bc03724a9?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1752900385516-71e2b34a1a0a?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1657598329574-b093eefbc89c?q=80&w=1170&auto=format&fit=crop",
-  "https://cdn.pixabay.com/photo/2018/05/27/23/16/ramadan-3434919_1280.jpg",
-  "https://cdn.pixabay.com/photo/2020/05/07/00/32/lanterns-5139744_1280.jpg",
-  "https://cdn.pixabay.com/photo/2018/04/24/02/15/lantern-3346144_1280.jpg",
-  "https://images.unsplash.com/photo-1708991870591-d6298b9f8abc?q=80&w=1170&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1763969074512-aab90cd7fde7?q=80&w=1108&auto=format&fit=crop"
+const ramadanImages=[
+
+"https://plus.unsplash.com/premium_photo-1679952778520-014159144403?q=80&w=1170&auto=format&fit=crop",
+"https://images.unsplash.com/photo-1728293955057-a36dcf226bdd?q=80&w=1170&auto=format&fit=crop",
+"https://images.unsplash.com/photo-1553755088-ef1973c7b4a1?q=80&w=1170&auto=format&fit=crop",
+"https://plus.unsplash.com/premium_photo-1676232732108-27c7ff6dc5cd?q=80&w=1170&auto=format&fit=crop",
+"https://plus.unsplash.com/premium_photo-1679760773027-463c7e1e773c?q=80&w=1173&auto=format&fit=crop",
+"https://images.unsplash.com/photo-1624862300786-fcdbd20ba0c3?q=80&w=1186&auto=format&fit=crop",
+"https://images.unsplash.com/photo-1587617425953-9075d28b8c46?q=80&w=1170&auto=format&fit=crop",
+"https://images.unsplash.com/photo-1561314945-0562f5b6d2c6?q=80&w=1171&auto=format&fit=crop",
+"https://plus.unsplash.com/premium_photo-1676208757124-65a7e57e02cb?q=80&w=1170&auto=format&fit=crop",
+"https://images.unsplash.com/photo-1645579954839-9a91874deb4d?q=80&w=1073&auto=format&fit=crop",
+"https://images.unsplash.com/photo-1624862301587-9f3900f0b8d1?q=80&w=1342&auto=format&fit=crop",
+"https://images.unsplash.com/photo-1649565725805-2a85e39cf61f?q=80&w=1331&auto=format&fit=crop",
+"https://plus.unsplash.com/premium_photo-1679952777081-62e3fee6d3a5?q=80&w=1170&auto=format&fit=crop",
+"https://plus.unsplash.com/premium_photo-1679952779171-c0a395ce4bf4?q=80&w=1170&auto=format&fit=crop",
+"https://images.unsplash.com/photo-1558617861-07ffd51a4782?q=80&w=1170&auto=format&fit=crop",
+"https://plus.unsplash.com/premium_photo-1679952778153-faa36584f567?q=80&w=1170&auto=format&fit=crop",
+"https://images.unsplash.com/photo-1713463975229-f45c82ac5b5c?q=80&w=1170&auto=format&fit=crop",
+"https://images.unsplash.com/photo-1554794470-42d3cd193ecc?q=80&w=1170&auto=format&fit=crop",
+"https://images.unsplash.com/photo-1550770472-745a80f68d07?q=80&w=1170&auto=format&fit=crop",
+"https://images.unsplash.com/photo-1761958150507-7bcc80840cf9?q=80&w=1175&auto=format&fit=crop",
+"https://images.unsplash.com/photo-1581073107630-95747d589483?q=80&w=1170&auto=format&fit=crop",
+"https://images.unsplash.com/photo-1729501055906-866167477c24?q=80&w=1170&auto=format&fit=crop",
+"https://images.unsplash.com/photo-1749971529322-ea0bc03724a9?q=80&w=1170&auto=format&fit=crop",
+"https://images.unsplash.com/photo-1752900385516-71e2b34a1a0a?q=80&w=1170&auto=format&fit=crop",
+"https://images.unsplash.com/photo-1657598329574-b093eefbc89c?q=80&w=1170&auto=format&fit=crop",
+"https://cdn.pixabay.com/photo/2018/05/27/23/16/ramadan-3434919_1280.jpg",
+"https://cdn.pixabay.com/photo/2020/05/07/00/32/lanterns-5139744_1280.jpg",
+"https://cdn.pixabay.com/photo/2018/04/24/02/15/lantern-3346144_1280.jpg",
+"https://images.unsplash.com/photo-1708991870591-d6298b9f8abc?q=80&w=1170&auto=format&fit=crop",
+"https://images.unsplash.com/photo-1763969074512-aab90cd7fde7?q=80&w=1108&auto=format&fit=crop"
+
 ];
 
-const eidImage = "https://egyptianstreets.com/wp-content/uploads/2020/05/kahk.jpg";
+const eidImage="https://egyptianstreets.com/wp-content/uploads/2020/05/kahk.jpg";
 
 // =====================
-// العناصر
+// عناصر
 // =====================
-const bg = document.getElementById("bg");
-const dayEl = document.getElementById("day");
-const nameEl = document.getElementById("name");
-const textEl = document.getElementById("text");
-const footerEl = document.getElementById("footer");
-const countdownEl = document.getElementById("countdown");
-const moonEl = document.getElementById("moon");
-const heartEl = document.getElementById("heart");
+const bg=document.getElementById("bg");
+const dayEl=document.getElementById("day");
+const nameEl=document.getElementById("name");
+const textEl=document.getElementById("text");
+const footerEl=document.getElementById("footer");
 
 // =====================
-// العداد
+// حساب اليوم
 // =====================
-function formatUnit(v, one, two, few, many){
-  if(v === 0) return "";
-  if(v === 1) return one;
-  if(v === 2) return two;
-
-  if(v >= 3 && v <= 10) return `${v} ${few}`;
-
-  return `${v} ${many}`;
-}
-
-let timer=null;
-function startCountdown(){
-  updateCountdown();
-  timer=setInterval(updateCountdown,1000);
-}
-function stopCountdown(){
-  clearInterval(timer);
-  countdownEl.textContent="";
-  moonEl.style.opacity=0;
-  heartEl.style.opacity=0;
-}
-
-function updateCountdown(){
-  const diff=targetDay-new Date();
-  if(diff<=0){stopCountdown();return;}
-
-  const d=Math.floor(diff/86400000);
-  const h=Math.floor(diff/3600000)%24;
-  const m=Math.floor(diff/60000)%60;
-  const s=Math.floor(diff/1000)%60;
-
-  countdownEl.textContent =
-  "فاضل " +
-  [
-    formatUnit(d,"يوم","يومين","أيام","يوم"),
-    formatUnit(h,"ساعة","ساعتين","ساعات","ساعة"),
-    formatUnit(m,"دقيقة","دقيقتين","دقائق","دقيقة"),
-    formatUnit(s,"ثانية","ثانيتين","ثواني","ثانية")
-  ]
-  .filter(Boolean)
-  .join(" و ");
-
-  moonEl.style.opacity = d<=7?1:0;
-  heartEl.style.opacity = d<=3?1:0;
-}
+const today=getToday();
+const diffRamadan=Math.floor((today-ramadanStart)/86400000);
 
 // =====================
 // المنطق
 // =====================
-const today=new Date();
-const diffRamadan=Math.floor((today-ramadanStart)/86400000);
-
 if(today<ramadanStart){
   bg.src=beforeRamadanImage;
   nameEl.textContent="امـــــيـــــرة";
-  textEl.textContent=
-    "كل عام وانتى بخير وفى سعادة دائمة\nرمضان كريم\n\n"+
-    "اللهم بلغها رمضان بقلب مطمئن وايام مليئة بالخير والسكينة\n"+
-    "اللهم بلغها رمضان وأنت راض عنها واجعله شهر طمأنينة وراحة لها";
-  footerEl.textContent="انتظرى ليوم 1 رمضان";
-  startCountdown();
+  textEl.textContent="كل عام وانتى بخير وفى سعادة دائمة\nرمضان كريم";
 }
 else if(today<eidStart){
   const i=Math.min(diffRamadan,29);
   bg.src=ramadanImages[i];
-  dayEl.textContent=`${i+1} رمضان`;
+  dayEl.textContent=${i+1} رمضان;
   textEl.textContent=ramadanDuas[i];
-  footerEl.textContent="تقبل الله صيامك واستجاب دعائك وفتح لك أبواب الخير";
-  stopCountdown();
 }
 else{
   bg.src=eidImage;
   dayEl.textContent="عيد سعيد";
   nameEl.textContent="كل عام وانتى بخير وبصحة";
   textEl.textContent="ربنا يسعدك ويجعل ايامك كلها فرحة وعيد";
-  stopCountdown();
 }
-// =====================
-// مراقبة تغيير اليوم تلقائياً
-// =====================
-setInterval(() => {
-  const now = new Date();
 
-  if (
-    now.getHours() === 0 &&
-    now.getMinutes() === 0 &&
-    now.getSeconds() === 0
-  ) {
-    location.reload(); // يعمل تحديث للصفحة أول ما الساعة تبقى 12
-  }
-}, 1000);
 </script>
-
 </body>
 </html>
