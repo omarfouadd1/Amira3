@@ -105,7 +105,7 @@ body{
 <script>
 
 // =====================
-// التواريخ (19 فبراير = 1 رمضان)
+// التواريخ
 // =====================
 const ramadanStart = new Date(2026,1,19);
 const eidStart     = new Date(2026,2,19);
@@ -120,7 +120,7 @@ function getToday(){
 }
 
 // =====================
-// الأدعية (30 دعاء)
+// الأدعية (30)
 // =====================
 const ramadanDuas = [
 "اللهم يا من تعلم ما في قلبها، اجعل فيه نورا دائما، وراحة لا تزول، وقربا منك يطمئنها.",
@@ -156,12 +156,11 @@ const ramadanDuas = [
 ];
 
 // =====================
-// الصور (30 صورة زي ما انت حاططهم)
+// الصور (30)
 // =====================
 const beforeRamadanImage="https://i.ibb.co/FqsJGGbj/Chat-GPT-Image-Feb-8-2026-01-05-35-AM.png";
 
 const ramadanImages=[
-
 "https://plus.unsplash.com/premium_photo-1679952778520-014159144403?q=80&w=1170&auto=format&fit=crop",
 "https://images.unsplash.com/photo-1728293955057-a36dcf226bdd?q=80&w=1170&auto=format&fit=crop",
 "https://images.unsplash.com/photo-1553755088-ef1973c7b4a1?q=80&w=1170&auto=format&fit=crop",
@@ -192,13 +191,12 @@ const ramadanImages=[
 "https://cdn.pixabay.com/photo/2018/04/24/02/15/lantern-3346144_1280.jpg",
 "https://images.unsplash.com/photo-1708991870591-d6298b9f8abc?q=80&w=1170&auto=format&fit=crop",
 "https://images.unsplash.com/photo-1763969074512-aab90cd7fde7?q=80&w=1108&auto=format&fit=crop"
-
 ];
 
 const eidImage="https://egyptianstreets.com/wp-content/uploads/2020/05/kahk.jpg";
 
 // =====================
-// عناصر
+// العناصر
 // =====================
 const bg=document.getElementById("bg");
 const dayEl=document.getElementById("day");
@@ -207,14 +205,11 @@ const textEl=document.getElementById("text");
 const footerEl=document.getElementById("footer");
 
 // =====================
-// حساب اليوم
+// المنطق
 // =====================
 const today=getToday();
 const diffRamadan=Math.floor((today-ramadanStart)/86400000);
 
-// =====================
-// المنطق
-// =====================
 if(today<ramadanStart){
   bg.src=beforeRamadanImage;
   nameEl.textContent="امـــــيـــــرة";
@@ -223,7 +218,7 @@ if(today<ramadanStart){
 else if(today<eidStart){
   const i=Math.min(diffRamadan,29);
   bg.src=ramadanImages[i];
-  dayEl.textContent=${i+1} رمضان;
+  dayEl.textContent=`${i+1} رمضان`;
   textEl.textContent=ramadanDuas[i];
 }
 else{
