@@ -20,7 +20,6 @@ body{
   overflow:hidden;
 }
 
-/* الخلفية */
 .bg{
   position:fixed;
   inset:0;
@@ -30,7 +29,6 @@ body{
   z-index:-2;
 }
 
-/* طبقة تغميق */
 .overlay{
   position:fixed;
   inset:0;
@@ -38,7 +36,6 @@ body{
   z-index:-1;
 }
 
-/* الكارت */
 .card{
   background:transparent;
   padding:44px 36px;
@@ -48,7 +45,6 @@ body{
   position:relative;
 }
 
-/* هالة */
 .card::before{
   content:"";
   position:absolute;
@@ -59,7 +55,6 @@ body{
   border-radius:40px;
 }
 
-/* النصوص */
 .day{font-size:18px;margin-bottom:12px;}
 
 .name{
@@ -83,7 +78,6 @@ body{
   font-size:14px;
 }
 
-/* اطار اسود خفيف للكلام */
 .day,.text,.footer{
   text-shadow:
     -1px -1px 0 #000,
@@ -94,16 +88,13 @@ body{
     0 0 20px rgba(0,0,0,.45);
 }
 
-/* القلب */
 #heart{
-  margin-top:10px;
   animation:pulse 1.6s infinite;
-  opacity:0;
 }
 
 @keyframes pulse{
   0%{transform:scale(1);opacity:.6}
-  50%{transform:scale(1.25);opacity:1}
+  50%{transform:scale(1.2);opacity:1}
   100%{transform:scale(1);opacity:.6}
 }
 </style>
@@ -120,29 +111,27 @@ body{
   <div id="text" class="text"></div>
   <div id="footer" class="footer"></div>
   <div id="countdown" class="footer"></div>
-  <div id="heart">❤️</div>
+  <div id="moon" class="footer" style="font-size:26px;opacity:0;">🌙</div>
+  <div id="heart" class="footer" style="font-size:22px;opacity:0;">❤️</div>
 </div>
 
 <script>
-// =====================
-// التواريخ
-// =====================
-const ramadanStart = new Date("2026-02-19T00:00:00"); 
-const eidStart     = new Date("2026-03-19T00:00:00");
-const targetDay    = new Date("2026-02-19T00:00:00");
 
-// =====================
-// الأدعية (كاملة)
-// =====================
+// ===== التواريخ (محلي بدون UTC مشاكل) =====
+const ramadanStart = new Date(2026,1,18);
+const eidStart     = new Date(2026,2,19);
+const targetDay    = new Date(2026,1,18);
+
+// ===== الأدعية =====
 const ramadanDuas = [
 "اللهم يا من تعلم ما في قلبها، اجعل فيه نورا دائما، وراحة لا تزول، وقربا منك يطمئنها.",
 "اللهم ثبت قلبها على طاعتك حين تتقلب القلوب، واهدها لما تحب وترضى",
 "اللهم إن ضاق صدرها فوسعه بذكرك، وإن ثقل همها فخففه بلطفك",
 "اللهم ارزقها طمأنينة لا تزول، وسكينة تسكن أعماق قلبها",
-"اللهم اغفر لها، واشرح صدرها، واصرف عنها ما يؤذيها",
-"اللهم احفظها بعينك التي لا تنام",
-"اللهم علمها ما ينفعها وزدها نورا",
-"اللهم اكتب لها الخير حيث كان",
+"اللهم اغفر لها ذنوبها، واشرح صدرها، واصرف عنها ما يؤذيها",
+"اللهم احفظها بعينك التي لا تنام، ولا تكلها إلى نفسها طرفة عين",
+"اللهم علمها ما ينفعها، وانفعها بما علمتها، وزدها علما ونورا",
+"اللهم ألهمها رشدها، وبارك لها في اختياراتها، واكتب لها الخير حيث كان",
 "اللهم اجعلها من عبادك الصالحين",
 "اللهم ازرع الرضا في قلبها",
 "اللهم أصلح لها شأنها كله",
@@ -151,10 +140,10 @@ const ramadanDuas = [
 "اللهم يسر لها أمرها",
 "اللهم ارزقها صبرا جميلا",
 "اللهم أحسن تدبير شؤونها",
-"اللهم اجعلها من الذاكرين",
+"اللهم اجعلها من الذاكرين لك",
 "اللهم اكتب لها السلامة",
 "اللهم ارزقها قلبا سليما",
-"اللهم طمئن قلبها بما تحب",
+"اللهم طمئن قلبها",
 "اللهم اجعلها ممن رضيت عنهم",
 "اللهم ارزقها الإخلاص",
 "اللهم اجعلها من أهل العفو",
@@ -167,126 +156,125 @@ const ramadanDuas = [
 "اللهم اختم لها رمضان بالقبول"
 ];
 
-// =====================
-// الصور (30 صورة كما هي)
-// =====================
-const beforeRamadanImage="https://i.ibb.co/FqsJGGbj/Chat-GPT-Image-Feb-8-2026-01-05-35-AM.png";
+// ===== الصور 30 كما هي =====
+const beforeRamadanImage = "https://i.ibb.co/FqsJGGbj/Chat-GPT-Image-Feb-8-2026-01-05-35-AM.png";
 
-const ramadanImages=[
-"https://plus.unsplash.com/premium_photo-1679952778520-014159144403?q=80&w=1170&auto=format&fit=crop",
-"https://images.unsplash.com/photo-1728293955057-a36dcf226bdd?q=80&w=1170&auto=format&fit=crop",
-"https://images.unsplash.com/photo-1553755088-ef1973c7b4a1?q=80&w=1170&auto=format&fit=crop",
-"https://plus.unsplash.com/premium_photo-1676232732108-27c7ff6dc5cd?q=80&w=1170&auto=format&fit=crop",
-"https://plus.unsplash.com/premium_photo-1679760773027-463c7e1e773c?q=80&w=1173&auto=format&fit=crop",
-"https://images.unsplash.com/photo-1624862300786-fcdbd20ba0c3?q=80&w=1186&auto=format&fit=crop",
-"https://images.unsplash.com/photo-1587617425953-9075d28b8c46?q=80&w=1170&auto=format&fit=crop",
-"https://images.unsplash.com/photo-1561314945-0562f5b6d2c6?q=80&w=1171&auto=format&fit=crop",
-"https://plus.unsplash.com/premium_photo-1676208757124-65a7e57e02cb?q=80&w=1170&auto=format&fit=crop",
-"https://images.unsplash.com/photo-1645579954839-9a91874deb4d?q=80&w=1073&auto=format&fit=crop",
-"https://images.unsplash.com/photo-1624862301587-9f3900f0b8d1?q=80&w=1342&auto=format&fit=crop",
-"https://images.unsplash.com/photo-1649565725805-2a85e39cf61f?q=80&w=1331&auto=format&fit=crop",
-"https://plus.unsplash.com/premium_photo-1679952777081-62e3fee6d3a5?q=80&w=1170&auto=format&fit=crop",
-"https://plus.unsplash.com/premium_photo-1679952779171-c0a395ce4bf4?q=80&w=1170&auto=format&fit=crop",
-"https://images.unsplash.com/photo-1558617861-07ffd51a4782?q=80&w=1170&auto=format&fit=crop",
-"https://plus.unsplash.com/premium_photo-1679952778153-faa36584f567?q=80&w=1170&auto=format&fit=crop",
-"https://images.unsplash.com/photo-1713463975229-f45c82ac5b5c?q=80&w=1170&auto=format&fit=crop",
-"https://images.unsplash.com/photo-1554794470-42d3cd193ecc?q=80&w=1170&auto=format&fit=crop",
-"https://images.unsplash.com/photo-1550770472-745a80f68d07?q=80&w=1170&auto=format&fit=crop",
-"https://images.unsplash.com/photo-1761958150507-7bcc80840cf9?q=80&w=1175&auto=format&fit=crop",
-"https://images.unsplash.com/photo-1581073107630-95747d589483?q=80&w=1170&auto=format&fit=crop",
-"https://images.unsplash.com/photo-1729501055906-866167477c24?q=80&w=1170&auto=format&fit=crop",
-"https://images.unsplash.com/photo-1749971529322-ea0bc03724a9?q=80&w=1170&auto=format&fit=crop",
-"https://images.unsplash.com/photo-1752900385516-71e2b34a1a0a?q=80&w=1170&auto=format&fit=crop",
-"https://images.unsplash.com/photo-1657598329574-b093eefbc89c?q=80&w=1170&auto=format&fit=crop",
-"https://cdn.pixabay.com/photo/2018/05/27/23/16/ramadan-3434919_1280.jpg",
-"https://cdn.pixabay.com/photo/2020/05/07/00/32/lanterns-5139744_1280.jpg",
-"https://cdn.pixabay.com/photo/2018/04/24/02/15/lantern-3346144_1280.jpg",
-"https://images.unsplash.com/photo-1708991870591-d6298b9f8abc?q=80&w=1170&auto=format&fit=crop",
-"https://images.unsplash.com/photo-1763969074512-aab90cd7fde7?q=80&w=1108&auto=format&fit=crop"
+const ramadanImages = [
+  "https://plus.unsplash.com/premium_photo-1679952778520-014159144403?q=80&w=1170&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1728293955057-a36dcf226bdd?q=80&w=1170&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1553755088-ef1973c7b4a1?q=80&w=1170&auto=format&fit=crop",
+  "https://plus.unsplash.com/premium_photo-1676232732108-27c7ff6dc5cd?q=80&w=1170&auto=format&fit=crop",
+  "https://plus.unsplash.com/premium_photo-1679760773027-463c7e1e773c?q=80&w=1173&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1624862300786-fcdbd20ba0c3?q=80&w=1186&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1587617425953-9075d28b8c46?q=80&w=1170&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1561314945-0562f5b6d2c6?q=80&w=1171&auto=format&fit=crop",
+  "https://plus.unsplash.com/premium_photo-1676208757124-65a7e57e02cb?q=80&w=1170&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1645579954839-9a91874deb4d?q=80&w=1073&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1624862301587-9f3900f0b8d1?q=80&w=1342&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1649565725805-2a85e39cf61f?q=80&w=1331&auto=format&fit=crop",
+  "https://plus.unsplash.com/premium_photo-1679952777081-62e3fee6d3a5?q=80&w=1170&auto=format&fit=crop",
+  "https://plus.unsplash.com/premium_photo-1679952779171-c0a395ce4bf4?q=80&w=1170&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1558617861-07ffd51a4782?q=80&w=1170&auto=format&fit=crop",
+  "https://plus.unsplash.com/premium_photo-1679952778153-faa36584f567?q=80&w=1170&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1713463975229-f45c82ac5b5c?q=80&w=1170&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1554794470-42d3cd193ecc?q=80&w=1170&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1550770472-745a80f68d07?q=80&w=1170&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1761958150507-7bcc80840cf9?q=80&w=1175&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1581073107630-95747d589483?q=80&w=1170&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1729501055906-866167477c24?q=80&w=1170&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1749971529322-ea0bc03724a9?q=80&w=1170&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1752900385516-71e2b34a1a0a?q=80&w=1170&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1657598329574-b093eefbc89c?q=80&w=1170&auto=format&fit=crop",
+  "https://cdn.pixabay.com/photo/2018/05/27/23/16/ramadan-3434919_1280.jpg",
+  "https://cdn.pixabay.com/photo/2020/05/07/00/32/lanterns-5139744_1280.jpg",
+  "https://cdn.pixabay.com/photo/2018/04/24/02/15/lantern-3346144_1280.jpg",
+  "https://images.unsplash.com/photo-1708991870591-d6298b9f8abc?q=80&w=1170&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1763969074512-aab90cd7fde7?q=80&w=1108&auto=format&fit=crop"
 ];
 
 const eidImage="https://egyptianstreets.com/wp-content/uploads/2020/05/kahk.jpg";
 
-// =====================
-// العناصر
-// =====================
 const bg=document.getElementById("bg");
 const dayEl=document.getElementById("day");
 const nameEl=document.getElementById("name");
 const textEl=document.getElementById("text");
 const footerEl=document.getElementById("footer");
 const countdownEl=document.getElementById("countdown");
+const moonEl=document.getElementById("moon");
 const heartEl=document.getElementById("heart");
 
-// =====================
-// العداد
-// =====================
 function formatUnit(v,one,two,few){
-if(v===0)return"";
-if(v===1)return one;
-if(v===2)return two;
-if(v>=3&&v<=10)return v+" "+few;
-return v+" "+one;
+  if(v===0)return "";
+  if(v===1)return one;
+  if(v===2)return two;
+  return ${v} ${few};
+}
+
+let timer=null;
+function startCountdown(){
+  updateCountdown();
+  timer=setInterval(updateCountdown,1000);
+}
+function stopCountdown(){
+  clearInterval(timer);
+  countdownEl.textContent="";
+  moonEl.style.opacity=0;
+  heartEl.style.opacity=0;
 }
 
 function updateCountdown(){
-const diff=targetDay-new Date();
-if(diff<=0){countdownEl.textContent="";return;}
+  const diff=targetDay-new Date();
+  if(diff<=0){stopCountdown();return;}
+  const d=Math.floor(diff/86400000);
+  const h=Math.floor(diff/3600000)%24;
+  const m=Math.floor(diff/60000)%60;
+  const s=Math.floor(diff/1000)%60;
 
-const d=Math.floor(diff/86400000);
-const h=Math.floor(diff/3600000)%24;
-const m=Math.floor(diff/60000)%60;
-const s=Math.floor(diff/1000)%60;
+  countdownEl.textContent="فاضل "+
+  [
+    formatUnit(d,"يوم","يومين","أيام"),
+    formatUnit(h,"ساعة","ساعتين","ساعات"),
+    formatUnit(m,"دقيقة","دقيقتين","دقائق"),
+    formatUnit(s,"ثانية","ثانيتين","ثواني")
+  ].filter(Boolean).join(" و ");
 
-countdownEl.textContent="فاضل "+
-[
-formatUnit(d,"يوم","يومين","أيام"),
-formatUnit(h,"ساعة","ساعتين","ساعات"),
-formatUnit(m,"دقيقة","دقيقتين","دقائق"),
-formatUnit(s,"ثانية","ثانيتين","ثواني")
-].filter(Boolean).join(" و ");
+  moonEl.style.opacity=d<=7?1:0;
+  heartEl.style.opacity=d<=3?1:0;
 }
 
-setInterval(updateCountdown,1000);
-
-// =====================
-// المنطق
-// =====================
 const today=new Date();
+today.setHours(0,0,0,0);
+
 const diffRamadan=Math.floor((today-ramadanStart)/86400000);
 
 if(today<ramadanStart){
-bg.src=beforeRamadanImage;
-nameEl.textContent="امـــــيـــــرة";
-textEl.textContent="كل عام وانتى بخير وفى سعادة دائمة";
-footerEl.textContent="انتظرى ليوم 1 رمضان";
-updateCountdown();
-heartEl.style.opacity=0;
+  bg.src=beforeRamadanImage;
+  nameEl.textContent="امـــــيـــــرة";
+  textEl.textContent="كل عام وانتى بخير وفى سعادة دائمة\nرمضان كريم";
+  footerEl.textContent="انتظرى ليوم 1 رمضان";
+  startCountdown();
 }
 else if(today<eidStart){
-const i=Math.min(diffRamadan,29);
-bg.src=ramadanImages[i];
-dayEl.textContent=${i+1} رمضان;
-textEl.textContent=ramadanDuas[i];
-footerEl.textContent="تقبل الله صيامك واستجاب دعائك وفتح لك أبواب الخير";
-heartEl.style.opacity=1;
+  const i=Math.min(diffRamadan,29);
+  bg.src=ramadanImages[i];
+  dayEl.textContent=${i+1} رمضان;
+  textEl.textContent=ramadanDuas[i];
+  footerEl.textContent="تقبل الله صيامك";
+  stopCountdown();
 }
 else{
-bg.src=eidImage;
-dayEl.textContent="عيد سعيد";
-nameEl.textContent="كل عام وانتى بخير وبصحة";
-textEl.textContent="ربنا يسعدك ويجعل ايامك كلها فرحة وعيد";
-heartEl.style.opacity=0;
+  bg.src=eidImage;
+  dayEl.textContent="عيد سعيد";
+  nameEl.textContent="كل عام وانتى بخير وبصحة";
+  textEl.textContent="ربنا يسعدك ويجعل ايامك كلها فرحة وعيد";
+  stopCountdown();
 }
 
-// =====================
-// ريفريش الساعة 12
-// =====================
 setInterval(()=>{
-const now=new Date();
-if(now.getHours()===0&&now.getMinutes()===0&&now.getSeconds()===0){
-location.reload();
-}
+  const now=new Date();
+  if(now.getHours()===0&&now.getMinutes()===0&&now.getSeconds()===0){
+    location.reload();
+  }
 },1000);
 
 </script>
