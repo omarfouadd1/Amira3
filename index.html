@@ -27,6 +27,7 @@ body{
   width:100%;
   height:100%;
   object-fit:cover;
+  object-position:center;
   z-index:-2;
 }
 
@@ -38,9 +39,11 @@ body{
   z-index:-1;
 }
 
-/* الكارت */
+/* الكارت شفاف */
 .card{
   background:transparent;
+  backdrop-filter:none;
+  border-radius:30px;
   padding:44px 36px;
   max-width:520px;
   width:100%;
@@ -48,7 +51,7 @@ body{
   position:relative;
 }
 
-/* هالة */
+/* هالة خفيفة */
 .card::before{
   content:"";
   position:absolute;
@@ -82,13 +85,6 @@ body{
 
 .day,.text,.footer{
   text-shadow:
-    /* إطار أسود خفيف */
-    -1px -1px 0 #000,
-     1px -1px 0 #000,
-    -1px  1px 0 #000,
-     1px  1px 0 #000,
-
-    /* الظل الناعم اللي كان موجود */
     0 2px 10px rgba(0,0,0,.65),
     0 0 20px rgba(0,0,0,.45);
 }
@@ -126,58 +122,50 @@ body{
 // =====================
 const ramadanStart = new Date("2026-02-18");
 const eidStart     = new Date("2026-03-19");
-const targetDay    = new Date("2026-02-19T00:00:00");
+const targetDay    = new Date("2026-02-18T00:00:00");
 
-  function getEgyptTime(){
-  const now = new Date();
-  const egyptTime = new Date(
-    now.toLocaleString("en-US", { timeZone: "Africa/Cairo" })
-  );
-  return egyptTime;
-}
 // =====================
 // الأدعية
 // =====================
 const ramadanDuas = [
-"اللهم يا من تعلم ما في قلبها، اجعل فيه نورا دائما، وراحة لا تزول، وقربا منك يطمئنها.",
-"اللهم ثبت قلبها على طاعتك حين تتقلب القلوب، واهدها لما تحب وترضى",
-"اللهم إن ضاق صدرها فوسعه بذكرك، وإن ثقل همها فخففه بلطفك",
-"اللهم ارزقها طمأنينة لا تزول، وسكينة تسكن أعماق قلبها",
-"اللهم اغفر لها ذنوبها، واشرح صدرها، واصرف عنها ما يؤذيها",
-"اللهم احفظها بعينك التي لا تنام، ولا تكلها إلى نفسها طرفة عين",
-"اللهم علمها ما ينفعها، وانفعها بما علمتها، وزدها علما ونورا",
-"اللهم ألهمها رشدها، وبارك لها في اختياراتها، واكتب لها الخير حيث كان",
-"اللهم اجعلها من عبادك الصالحين الذين إذا أحسنت إليهم شكروا، وإذا ابتليتهم صبروا",
-"اللهم ازرع الرضا في قلبها، حتى لا تتمنى إلا ما اخترته لها",
-"اللهم أصلح لها شأنها كله، ولا تترك في حياتها أمرا إلا ولطفك يحيط به",
-"اللهم اجعل القرآن نور صدرها، وجلاء حزنها، ودليلها إليك",
-"اللهم ارزقها حسن الظن بك، والثقة في حكمتك، والرضا بقضائك",
-"اللهم يسر لها أمرها، وسدّد خطاها، واكتب لها السلامة في كل طريق",
-"اللهم ارزقها صبرا جميلا، وسكينة تعينها على ما لا تستطيع احتماله وحدها",
-"اللهم أحسن تدبير شؤونها، واختر لها ما تعجز عن اختياره لنفسها",
-"اللهم اجعلها من الذاكرين لك كثيرا، المستأنسين بقربك",
-"اللهم اكتب لها السلامة في دينها ودنياها وأهلها",
-"اللهم ارزقها قلبا سليما لا يحمل حقدا ولا خوفا إلا منك",
-"اللهم طمئن قلبها بما تحب، واصرف عنها ما يؤذيها بلطفك",
-"اللهم اجعلها ممن رضيت عنهم، ورضوا عنك",
-"اللهم ارزقها الإخلاص في القول والعمل، والصدق معك",
-"اللهم اجعلها من أهل العفو والصفح، كما تحب وترضى",
-"اللهم وسع لها في رزقها، وبارك لها فيما أعطيتها",
-"اللهم أبعد عنها الحزن، وبدله طمأنينة وأملا",
-"اللهم ارزقها راحة القلب، وهدوء الروح، وسكينة النفس",
-"اللهم وفقها لصلاح أمرها كله، واكتب لها الخير حيث كان",
-"اللهم اجعل لها نصيبا من رحمتك لا ينقطع",
-"اللهم تقبل منها صالح الأعمال، واجعلها خالصة لوجهك",
-"اللهم اختم لها رمضان بالقبول، والعتق من النار، والقرب منك"
+"اللهم يا مقلب القلوب ثبت قلبها على دينك",
+"اللهم اهد قلبها وسدد امرها",
+"اللهم اجعل لها من كل هم فرجا",
+"اللهم ارزقها طمأنينة القلب",
+"اللهم اغفر لها وشرح صدرها",
+"اللهم احفظها ولا تكلها لنفسها",
+"اللهم ارزقها علما نافعا",
+"اللهم اكتب لها الخير في اختياراتها",
+"اللهم اجعلها من عبادك الصالحين",
+"اللهم ازرع في قلبها الرضا",
+"اللهم اصلح لها شأنها كله",
+"اللهم اجعل القرآن ربيع قلبها",
+"اللهم ارزقها حسن الظن بك",
+"اللهم يسر امرها واكتب لها السداد",
+"اللهم ارزقها الصبر والسكينة",
+"اللهم احسن لها امورها كلها",
+"اللهم اجعلها من الذاكرين",
+"اللهم اكتب لها السلامة",
+"اللهم ارزقها قلبا سليما",
+"اللهم طمئن قلبها بالخير",
+"اللهم اجعلها ممن رضيت عنهم",
+"اللهم ارزقها الاخلاص",
+"اللهم اجعلها من اهل العفو",
+"اللهم وسع لها في رزقها",
+"اللهم ابعد عنها الحزن",
+"اللهم ارزقها راحة القلب",
+"اللهم وفقها لصلاح امورها",
+"اللهم اجعل لها نصيبا من رحمتك",
+"اللهم تقبل منها صالح الاعمال",
+"اللهم اختم لها رمضان بالقبول"
 ];
 
-
 // =====================
-// الصور (30 صورة كما هي)
+// الصور (كما هي)
 // =====================
 const beforeRamadanImage = "https://i.ibb.co/FqsJGGbj/Chat-GPT-Image-Feb-8-2026-01-05-35-AM.png";
-
 const ramadanImages = [
+  // 1 – 16
   "https://plus.unsplash.com/premium_photo-1679952778520-014159144403?q=80&w=1170&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1728293955057-a36dcf226bdd?q=80&w=1170&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1553755088-ef1973c7b4a1?q=80&w=1170&auto=format&fit=crop",
@@ -194,6 +182,8 @@ const ramadanImages = [
   "https://plus.unsplash.com/premium_photo-1679952779171-c0a395ce4bf4?q=80&w=1170&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1558617861-07ffd51a4782?q=80&w=1170&auto=format&fit=crop",
   "https://plus.unsplash.com/premium_photo-1679952778153-faa36584f567?q=80&w=1170&auto=format&fit=crop",
+
+  // 17 – 25
   "https://images.unsplash.com/photo-1713463975229-f45c82ac5b5c?q=80&w=1170&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1554794470-42d3cd193ecc?q=80&w=1170&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1550770472-745a80f68d07?q=80&w=1170&auto=format&fit=crop",
@@ -203,13 +193,14 @@ const ramadanImages = [
   "https://images.unsplash.com/photo-1749971529322-ea0bc03724a9?q=80&w=1170&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1752900385516-71e2b34a1a0a?q=80&w=1170&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1657598329574-b093eefbc89c?q=80&w=1170&auto=format&fit=crop",
+
+  // 26 – 30
   "https://cdn.pixabay.com/photo/2018/05/27/23/16/ramadan-3434919_1280.jpg",
   "https://cdn.pixabay.com/photo/2020/05/07/00/32/lanterns-5139744_1280.jpg",
   "https://cdn.pixabay.com/photo/2018/04/24/02/15/lantern-3346144_1280.jpg",
   "https://images.unsplash.com/photo-1708991870591-d6298b9f8abc?q=80&w=1170&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1763969074512-aab90cd7fde7?q=80&w=1108&auto=format&fit=crop"
 ];
-
 const eidImage = "https://egyptianstreets.com/wp-content/uploads/2020/05/kahk.jpg";
 
 // =====================
@@ -227,97 +218,57 @@ const heartEl = document.getElementById("heart");
 // =====================
 // العداد
 // =====================
-function formatUnit(v, one, two, few, many){
-  if(v === 0) return "";
-  if(v === 1) return one;
-  if(v === 2) return two;
-
-  if(v >= 3 && v <= 10) return ${v} ${few};
-
-  return ${v} ${many};
-}
-
-let timer=null;
-function startCountdown(){
-  updateCountdown();
-  timer=setInterval(updateCountdown,1000);
-}
-function stopCountdown(){
-  clearInterval(timer);
-  countdownEl.textContent="";
-  moonEl.style.opacity=0;
-  heartEl.style.opacity=0;
-}
-
 function updateCountdown(){
-  const diff=targetDay-new Date();
-  if(diff<=0){stopCountdown();return;}
+  const now = new Date();
+  const diff = targetDay - now;
+  if(diff <= 0){countdownEl.textContent="";return;}
 
-  const d=Math.floor(diff/86400000);
-  const h=Math.floor(diff/3600000)%24;
-  const m=Math.floor(diff/60000)%60;
-  const s=Math.floor(diff/1000)%60;
+  const d = Math.floor(diff/(1000*60*60*24));
+  const h = Math.floor((diff/(1000*60*60))%24);
+  const m = Math.floor((diff/(1000*60))%60);
+  const s = Math.floor((diff/1000)%60);
 
+  let dayWord = d>2?${d} ايام:d===2?"يومين":d===1?"يوم":"";
   countdownEl.textContent =
-  "فاضل " +
-  [
-    formatUnit(d,"يوم","يومين","أيام","يوم"),
-    formatUnit(h,"ساعة","ساعتين","ساعات","ساعة"),
-    formatUnit(m,"دقيقة","دقيقتين","دقائق","دقيقة"),
-    formatUnit(s,"ثانية","ثانيتين","ثواني","ثانية")
-  ]
-  .filter(Boolean)
-  .join(" و ");
+    d>0?فاضل ${dayWord} و ${h} ساعة و ${m} دقيقة و ${s} ثانية
+        :فاضل ${h} ساعة و ${m} دقيقة و ${s} ثانية;
 
   moonEl.style.opacity = d<=7?1:0;
   heartEl.style.opacity = d<=3?1:0;
 }
+updateCountdown();
+setInterval(updateCountdown,1000);
 
 // =====================
 // المنطق
 // =====================
-const today=new Date();
-const diffRamadan=Math.floor((today-ramadanStart)/86400000);
+const today = new Date();
+const diffRamadan = Math.floor((today-ramadanStart)/(1000*60*60*24));
 
-if(today<ramadanStart){
-  bg.src=beforeRamadanImage;
-  nameEl.textContent="امـــــيـــــرة";
-  textEl.textContent=
+if(today < ramadanStart){
+  bg.src = beforeRamadanImage;
+  nameEl.textContent = "امـــــيـــــرة";
+  textEl.textContent =
     "كل عام وانتى بخير وفى سعادة دائمة\nرمضان كريم\n\n"+
     "اللهم بلغها رمضان بقلب مطمئن وايام مليئة بالخير والسكينة\n"+
-    "اللهم بلغها رمضان وأنت راض عنها واجعله شهر طمأنينة وراحة لها";
-  footerEl.textContent="انتظرى ليوم 1 رمضان";
-  startCountdown();
+    "اللهم بلغها رمضان وأنت راض عنها واجعله شهر طمأنينة ورحمة لها";
+  footerEl.textContent = "انتظرى ليوم 1 رمضان";
 }
-else if(today<eidStart){
-  const i=Math.min(diffRamadan,29);
-  bg.src=ramadanImages[i];
-  dayEl.textContent=${i+1} رمضان;
-  textEl.textContent=ramadanDuas[i];
-  footerEl.textContent="تقبل الله صيامك واستجاب دعائك وفتح لك أبواب الخير";
-  stopCountdown();
+else if(today >= ramadanStart && today < eidStart){
+  const i = Math.min(diffRamadan,29);
+  bg.src = ramadanImages[i];
+  dayEl.textContent = ${i+1} رمضان;
+  textEl.textContent = ramadanDuas[i];
+  footerEl.textContent = "تقبل الله صيامك";
 }
 else{
-  bg.src=eidImage;
-  dayEl.textContent="عيد سعيد";
-  nameEl.textContent="كل عام وانتى بخير وبصحة";
-  textEl.textContent="ربنا يسعدك ويجعل ايامك كلها فرحة وعيد";
-  stopCountdown();
+  bg.src = eidImage;
+  dayEl.textContent = "عيد سعيد";
+  nameEl.textContent = "كل عام وانتى بخير وبصحة";
+  textEl.textContent = "ربنا يسعدك ويجعل ايامك كلها فرحة وعيد";
+  footerEl.textContent = "";
+  countdownEl.textContent = "";
 }
-// =====================
-// مراقبة تغيير اليوم تلقائياً
-// =====================
-setInterval(() => {
-  const now = new Date();
-
-  if (
-    now.getHours() === 0 &&
-    now.getMinutes() === 0 &&
-    now.getSeconds() === 0
-  ) {
-    location.reload(); // يعمل تحديث للصفحة أول ما الساعة تبقى 12
-  }
-}, 1000);
 </script>
 
 </body>
