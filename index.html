@@ -83,17 +83,48 @@ body{
     0 2px 10px rgba(0,0,0,.65);
   }
 .heart{
-  margin-top:20px;
-  font-size:35px;
-  animation:beat 3s infinite;
+  margin-top:25px;
+  font-size:65px;
   display:inline-block;
+  animation:loveBeat 3s infinite;
 }
 
-@keyframes beat{
-  0%{transform:scale(1);}
-  10%{transform:scale(1.2);}
-  15%{transform:scale(1);}
-  100%{transform:scale(1);}
+@keyframes loveBeat{
+  0%{
+    transform:scale(1);
+    text-shadow:0 0 5px rgba(255,0,0,0.4);
+  }
+
+  /* النبضة الأولى */
+  10%{
+    transform:scale(1.25);
+    text-shadow:
+      0 0 10px rgba(255,0,0,0.8),
+      0 0 25px rgba(255,0,0,1);
+  }
+
+  18%{
+    transform:scale(1);
+  }
+
+  /* النبضة الثانية الأصغر */
+  28%{
+    transform:scale(1.18);
+    text-shadow:
+      0 0 12px rgba(255,0,0,0.9),
+      0 0 30px rgba(255,0,0,1);
+  }
+
+  38%{
+    transform:scale(1);
+    text-shadow:0 0 5px rgba(255,0,0,0.4);
+  }
+
+  /* راحة لحد نهاية الـ 3 ثواني */
+  100%{
+    transform:scale(1);
+    text-shadow:0 0 5px rgba(255,0,0,0.4);
+  }
 }
 </style>
 </head>
